@@ -73,7 +73,6 @@ function Coins() {
       setLoading(false)
     })();
   }, [])
-  console.log(coins)
   return (
     <Container>
       <Header>
