@@ -156,8 +156,7 @@ function Coin() {
   const [ priceinfo, setPriceInfo ] = useState<PriceData>();
   const priceMatch = useRouteMatch(`/${coinUrl}/price`);
   const chartMatch = useRouteMatch(`/${coinUrl}/chart`);
-  console.log(priceMatch);
-  console.log(chartMatch);
+
   useEffect(() => {
     (async () => {
       /*
