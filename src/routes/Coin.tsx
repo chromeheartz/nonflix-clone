@@ -34,6 +34,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
 import { Link, Route, Switch, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
@@ -183,6 +184,9 @@ interface PriceData {
   };
 }
 
+interface ICoinProps {
+  // isDark : boolean;
+}
 
 function Coin() {
   const { coinUrl } = useParams<RouteParams>();
@@ -195,8 +199,11 @@ function Coin() {
     () => fetchCoinInfo(coinUrl)
   )
   const {isLoading : ticekrsLoading, data: tickersdata} = useQuery<PriceData>(
-    ["tickers", coinUrl],
-    () => fetchCoinTickers(coinUrl)
+    ["tickers", coinUrl], // unique key
+    () => fetchCoinTickers(coinUrl), // fetcher function
+    // { // option object
+    //   refetchInterval : 5000,
+    // }
   )
 
   // const [ loading, setLoading ] = useState(true);
@@ -218,6 +225,14 @@ function Coin() {
   const loading = infoLoading || ticekrsLoading
   return (
     <Container>
+      {/* 
+        head로 보내주는 라이브러리
+        head로 보내주는 direct link라서
+        favicon이나 css도 넣을수 있다.
+       */}
+      <Helmet>
+        <title>{state?.name ? state.name : loading ? "Loading..." : infodata?.name}</title>
+      </Helmet>
       <Header>
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infodata?.name}
@@ -239,8 +254,8 @@ function Coin() {
               <span>${infodata?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infodata?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>${tickersdata?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infodata?.description}</Description>
@@ -256,15 +271,15 @@ function Coin() {
           </Overview>
 
           <Tabs>
-            <Tab isActive={priceMatch !== null}>
-              <Link to={`/${coinUrl}/price`}>
-                Price
-              </Link>              
-            </Tab>
             <Tab isActive={chartMatch !== null}>
               <Link to={`/${coinUrl}/chart`}>
                 Chart
               </Link>
+            </Tab>
+            <Tab isActive={priceMatch !== null}>
+              <Link to={`/${coinUrl}/price`}>
+                Price
+              </Link>              
             </Tab>
           </Tabs>
 

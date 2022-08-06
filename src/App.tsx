@@ -1,7 +1,11 @@
 import Router from "./Router";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
 // 나의 캐시에 있는 query를 볼 수 있다.
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools' 
+import { darkTheme, lightTheme } from "./theme";
+import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from "./atoms";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -69,11 +73,28 @@ const GlobalStyle = createGlobalStyle`
 `
 
 function App() {
+  /*
+    const [ isDark, setIsDark ] = useState(false)
+    const toggleDark = () => setIsDark(current => !current)
+
+    setState함수를 이용할때
+    옵션이 두가지가 있는데, 그냥 value를 보내거나
+    function을 보내는것이다
+
+    function은 첫번째 argument로 현재의 state를 가진다.
+  */
+  const isDark = useRecoilValue(isDarkAtom)
   return (
     <>
-      <GlobalStyle />
-      <Router />
-      <ReactQueryDevtools initialIsOpen={true} />
+      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+       <GlobalStyle />
+       {/* 
+        chart 에서받기위해 isDark도 보냄 
+        <Router isDark={isDark} toggleDark={toggleDark} />
+       */}
+       <Router />
+       <ReactQueryDevtools initialIsOpen={true} />
+      </ThemeProvider>
     </>
   )
 }

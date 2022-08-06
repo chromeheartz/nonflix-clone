@@ -16,6 +16,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { HelmetProvider } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
@@ -36,8 +38,9 @@ const Header = styled.header`
 const CoinsList = styled.ul``;
 
 const Coin = styled.li`
-  background-color : white;
-  color : ${props => props.theme.bgColor};
+  border : 1px solid ${props => props.theme.textColor};
+  background-color : ${props => props.theme.cardBgColor};
+  color : ${props => props.theme.textColor};
   margin-bottom : 10px;
   border-radius : 15px;
   a {
@@ -45,6 +48,7 @@ const Coin = styled.li`
     align-items : center;
     transition : color 0.2s ease-in;
     padding : 20px;
+    color : ${props => props.theme.textColor};
   }
   &:hover {
     a {
@@ -80,7 +84,11 @@ interface ICoin {
   type: string,
 }
 
-function Coins() {
+interface ICoinsProps {
+  // toggleDark : () => void;
+}
+
+function Coins({} : ICoinsProps) {
   /* const [ coins, setCoins ] = useState<CoinInterface[]>([]);
   const [ loading, setLoading ] = useState(true);
   useEffect(() => {
@@ -107,6 +115,11 @@ function Coins() {
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
   return (
     <Container>
+      <HelmetProvider>
+        <Helmet>
+          <title>Coins</title>
+        </Helmet>
+      </HelmetProvider>
       <Header>
         <Title>Coins Title</Title>
       </Header>

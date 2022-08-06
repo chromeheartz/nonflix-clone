@@ -124,3 +124,8 @@
   * react typescript에서는 event.target보다 event.currentTarget을 쓴다.
 
 */
+
+
+/*
+  ********** typescript recap **********
+*/

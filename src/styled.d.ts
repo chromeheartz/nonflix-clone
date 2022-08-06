@@ -5,5 +5,6 @@
     textColor : string;
     bgColor : string;
     pointColor : string;
+    cardBgColor: string;
   }
  }

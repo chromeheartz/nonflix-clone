@@ -17,6 +17,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchCoinHistory } from "../api";
 import ApexChart from "react-apexcharts";
+import { isDarkAtom } from "../atoms";
+import { useRecoilValue } from "recoil";
 
 interface IHistorical {
   close: string;
@@ -31,12 +33,18 @@ interface IHistorical {
 
 interface ChartProps {
   coinUrl : string;
+  // isDark : boolean;
 }
 
-function Chart({ coinUrl  } : ChartProps){
+function Chart({ coinUrl } : ChartProps){
+  const isDark = useRecoilValue(isDarkAtom)
+
   const { isLoading, data} = useQuery<IHistorical[]>(
     ["ohlcv", coinUrl], 
-    () => fetchCoinHistory(coinUrl)
+    () => fetchCoinHistory(coinUrl),
+    // { // option object
+    //   refetchInterval : 5000,
+    // }
   )
   return (
     <div>{isLoading ? "loading chart..." : <ApexChart type="line"  
@@ -48,7 +56,7 @@ function Chart({ coinUrl  } : ChartProps){
     ]}
     options={{
       theme : {
-        mode : "dark"
+        mode : isDark ? "dark" : "light"
       },
       chart : {
         height : 300,
@@ -70,7 +78,9 @@ function Chart({ coinUrl  } : ChartProps){
         },
         axisTicks : {
           show : false,
-        }
+        },
+        type : "datetime",
+        categories : data?.map(date => date.time_close)
       },
       yaxis : {
         show : false,
@@ -78,7 +88,20 @@ function Chart({ coinUrl  } : ChartProps){
       stroke : {
         curve : "smooth",
         width : 5
+      },
+      fill : {
+        type : "gradient",
+        gradient : {
+          gradientToColors : ["blue"],
+          stops: [0, 70]
+        },
+      },
+      tooltip : {
+        y : {
+          formatter : (value) => `$${value.toFixed(2)}`
+        }
       }
+      // colors : ["red"],
   }}/>}</div>
   )
 }
