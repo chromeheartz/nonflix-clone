@@ -15,12 +15,13 @@
 */
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { HelmetProvider } from "react-helmet-async";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { isDarkAtom } from "../atoms";
 
 const Container = styled.div`
   padding : 0 20px;
@@ -88,7 +89,7 @@ interface ICoinsProps {
   // toggleDark : () => void;
 }
 
-function Coins({} : ICoinsProps) {
+function Coins() {
   /* const [ coins, setCoins ] = useState<CoinInterface[]>([]);
   const [ loading, setLoading ] = useState(true);
   useEffect(() => {
@@ -112,6 +113,9 @@ function Coins({} : ICoinsProps) {
     useQuery를 썼을때에 로딩이 보이지 않는 이유는
     reat query가 데이터를 캐시에 저장해놓기 때문.
   */
+//  setter function value를 set
+  const setDarkAtom = useSetRecoilState(isDarkAtom)
+  const toggleDarkAtom = () => setDarkAtom(prev => !prev)
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
   return (
     <Container>
@@ -122,6 +126,7 @@ function Coins({} : ICoinsProps) {
       </HelmetProvider>
       <Header>
         <Title>Coins Title</Title>
+        <button onClick={toggleDarkAtom}>Toggle Mode</button>
       </Header>
       {
         isLoading ? ( 

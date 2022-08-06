@@ -8,7 +8,7 @@ interface IRouterProps {
   // toggleDark : () => void;
   // isDark : boolean;
 }
-function Router({ } : IRouterProps) {
+function Router() {
   return <BrowserRouter>
     <Switch>
       <Route path="/:coinUrl">
