@@ -1,5 +1,7 @@
 import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
+// 나의 캐시에 있는 query를 볼 수 있다.
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools' 
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -71,6 +73,7 @@ function App() {
     <>
       <GlobalStyle />
       <Router />
+      <ReactQueryDevtools initialIsOpen={true} />
     </>
   )
 }

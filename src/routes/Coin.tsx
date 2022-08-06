@@ -1,6 +1,42 @@
+/*
+  const response = await fetch(`https://api.coinpaprika.com/v1/coins/${coinUrl}`);
+  const json = await response.json();
+
+  한줄로 바꾸는 코드도 있다.
+  const response = await (
+    await fetch(`https://api.coinpaprika.com/v1/coins/${coinUrl}`)
+  ).json();
+
+  이것이 캡슐화다
+  response를 받고 그 response에서부터 json을 받는것.
+  한줄의 solution이 두개의 변수를 받는것이다.
+*/
+
+/*
+  첫번째: Coins.tsx의 fetchCoins 에는 뒤에 ()가 붙지 않습니다.
+  두번째 : Coin.tsx 의 () => fetchfunction(argument) 는 
+  함수 뒤에 ()가 있고 그안에 인자가 들어가지만 앞에서 
+  () => 를 표현하여 주었으므로 일종의 함수 포장지 입니다.
+
+  정리 : useQuery 의 두번째 인자로는 함수가 들어가야 하지 
+  함수의 실행값이 들어가서는 안됩니다. 함수의 뒤에 ()를 붙이는것은 
+  함수를 실행하겠다는 의미이고, ()를 붙이지 않는것은 함수의 실행권한을
+  이벤트에게 넘기겠다는 말과 같습니다.
+
+  영상에서는 함수 뒤에 인자를 넣어주어야 하는데 
+  함수에 괄호를 열고 바로 인자를 집어넣으면 
+  함수를 전달하는 모양이 아닌 함수를 실행하여 
+  리턴된 값을 전달하게 되므로 기대하지 않은 
+  파라미터를 넘기는것과 같습니다. 
+  그렇기 때문에 () => 를 써서 함수안에 집어넣은 모양을 만들어 주는것입니다.
+*/
+
+
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Link, Route, Switch, useLocation, useParams, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
 
@@ -150,46 +186,44 @@ interface PriceData {
 
 function Coin() {
   const { coinUrl } = useParams<RouteParams>();
-  const [ loading, setLoading ] = useState(true);
   const { state } = useLocation<RouteState>();
-  const [ info, setInfo ] = useState<InfoData>();
-  const [ priceinfo, setPriceInfo ] = useState<PriceData>();
   const priceMatch = useRouteMatch(`/${coinUrl}/price`);
   const chartMatch = useRouteMatch(`/${coinUrl}/chart`);
 
-  useEffect(() => {
-    (async () => {
-      /*
-        const response = await fetch(`https://api.coinpaprika.com/v1/coins/${coinUrl}`);
-        const json = await response.json();
+  const {isLoading : infoLoading, data: infodata} = useQuery<InfoData>(
+    ["info", coinUrl],
+    () => fetchCoinInfo(coinUrl)
+  )
+  const {isLoading : ticekrsLoading, data: tickersdata} = useQuery<PriceData>(
+    ["tickers", coinUrl],
+    () => fetchCoinTickers(coinUrl)
+  )
 
-        한줄로 바꾸는 코드도 있다.
-        const response = await (
-          await fetch(`https://api.coinpaprika.com/v1/coins/${coinUrl}`)
-        ).json();
-
-        이것이 캡슐화다
-        response를 받고 그 response에서부터 json을 받는것.
-        한줄의 solution이 두개의 변수를 받는것이다.
-      */
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinUrl}`)
-      ).json();
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinUrl}`)
-      ).json()
-      setInfo(infoData);
-      setPriceInfo(priceData);
-      setLoading(false)
-    })();
-  }, [coinUrl])
+  // const [ loading, setLoading ] = useState(true);
+  // const [ info, setInfo ] = useState<InfoData>();
+  // const [ priceinfo, setPriceInfo ] = useState<PriceData>();
+  // useEffect(() => {
+  //   (async () => {
+  //     const infoData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/coins/${coinUrl}`)
+  //     ).json();
+  //     const priceData = await (
+  //       await fetch(`https://api.coinpaprika.com/v1/tickers/${coinUrl}`)
+  //     ).json()
+  //     setInfo(infoData);
+  //     setPriceInfo(priceData);
+  //     setLoading(false)
+  //   })();
+  // }, [coinUrl])
+  const loading = infoLoading || ticekrsLoading
   return (
     <Container>
       <Header>
         <Title>
-          {state?.name ? state.name : loading ? "Loading..." : info?.name}
+          {state?.name ? state.name : loading ? "Loading..." : infodata?.name}
         </Title>
-      </Header>
+     </Header>
+
       {
         loading ? (
           <Loader>loading ...</Loader>
@@ -198,26 +232,26 @@ function Coin() {
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
-              <span>{info?.rank}</span>
+              <span>{infodata?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>${info?.symbol}</span>
+              <span>${infodata?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Open Source:</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
+              <span>{infodata?.open_source ? "Yes" : "No"}</span>
             </OverviewItem>
           </Overview>
-          <Description>{info?.description}</Description>
+          <Description>{infodata?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Suply:</span>
-              <span>{priceinfo?.total_supply}</span>
+              <span>{tickersdata?.total_supply}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{priceinfo?.max_supply}</span>
+              <span>{tickersdata?.max_supply}</span>
             </OverviewItem>
           </Overview>
 
@@ -235,12 +269,12 @@ function Coin() {
           </Tabs>
 
           <Switch>
+            <Route path={`/${coinUrl}/chart`}>
+              <Chart coinUrl={coinUrl} />
+            </Route>
             <Route path={`/${coinUrl}/price`}>
               <Price />
-            </Route>
-            <Route path={`/${coinUrl}/chart`}>
-              <Chart />
-            </Route>
+            </Route> 
           </Switch>
         </>
         )
