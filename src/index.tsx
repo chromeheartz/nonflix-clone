@@ -1,17 +1,32 @@
+// coin
+
+// import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+// import CoinApp from './CoinApp';
+
+// const queryClient = new QueryClient();
+
+// todo
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import App from './App';
 import { RecoilRoot } from 'recoil';
-
-const queryClient = new QueryClient();
+import { ThemeProvider } from 'styled-components';
+import App from './App';
+import { darkTheme } from './theme';
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <QueryClientProvider client={queryClient}>
+      {/* 
+        Coin Tracker
+        
+        <QueryClientProvider client={queryClient}>
+          <CoinApp />
+        </QueryClientProvider>
+       */}
+      <ThemeProvider theme={darkTheme}>
         <App />
-      </QueryClientProvider>
+      </ThemeProvider>
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById("root")
