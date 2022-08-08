@@ -1,11 +1,10 @@
-import Router from "./Router";
+import Router from "../Router";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 // 나의 캐시에 있는 query를 볼 수 있다.
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools' 
-import { darkTheme, lightTheme } from "./theme";
-import { useState } from "react";
+import { darkTheme, lightTheme } from "../theme";
 import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atoms";
+import { isDarkAtom } from "../atoms";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -72,7 +71,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `
 
-function App() {
+function CoinTracker() {
   /*
     const [ isDark, setIsDark ] = useState(false)
     const toggleDark = () => setIsDark(current => !current)
@@ -99,4 +98,4 @@ function App() {
   )
 }
 
-export default App;
+export default CoinTracker;

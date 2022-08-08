@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import CoinApp from './CoinApp';
 import App from './App';
 
 // ** CoinApp
