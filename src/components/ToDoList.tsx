@@ -13,6 +13,7 @@ import ToDo from "./ToDo";
 function ToDoList() {
   // useState와 비슷함. 값, 값을 수정하는 함수
   const toDos = useRecoilValue(toDoState)
+  console.log(toDos)
   
   return (
       <div>

@@ -12,7 +12,6 @@ function CreateToDo() {
     register, handleSubmit, setValue
   } = useForm<IForm>();
   const handleValid = ({ toDo } : IForm) => {
-    console.log("data", toDo)
     // 함수의 return값이 toDos로 들어갈것이다.
     setToDos(oldToDos => [ 
       { text:toDo, id:Date.now(), category : "TO_DO" },
