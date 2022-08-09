@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { IToDo, toDoState } from "../todoAtoms";
+import { Categories, IToDo, toDoState } from "../todoAtoms";
 
 function ToDo({ text, category, id } : IToDo) {
   // atom을 수정하는 함수
@@ -22,16 +22,21 @@ function ToDo({ text, category, id } : IToDo) {
     })
   }
   return (
+    /*
+      enum의 안에 들어있는 값들에 마우스를 올려보면
+      number가 있는데 이것이 버튼의 네임으로 들어오게 되어서 에러가 생긴다.
+      버튼의 name이 숫자여선 안된다. 그렇기 떄문에 빈 문자열을 붙여 string으로 바꿔준다.
+    */
     <li>
       <span>{text}</span>
-      {category !== "TO_DO" && (
-        <button name="TO_DO"onClick={onClick}>To Do</button>
+      {category !== Categories.TO_DO && (
+        <button name={Categories.TO_DO + ""} onClick={onClick}>To Do</button>
       )}
-      {category !== "DOING" && (
-        <button name="DOING"onClick={onClick}>Doing</button>
+      {category !== Categories.DOING && (
+        <button name={Categories.DOING + ""} onClick={onClick}>Doing</button>
       )}
-      {category !== "DONE" && (
-        <button name="DONE"onClick={onClick}>Done</button>
+      {category !== Categories.DONE && (
+        <button name={Categories.DONE + ""} onClick={onClick}>Done</button>
       )}
     </li>
   )
