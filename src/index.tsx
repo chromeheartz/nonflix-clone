@@ -1,17 +1,9 @@
-// coin
-
-// import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-// import CoinApp from './CoinApp';
-
-// const queryClient = new QueryClient();
-
-// todo
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { RecoilRoot } from 'recoil';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import App from './App';
+import { darkTheme } from './theme';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -70,6 +62,8 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     font-family : 'Source Sans Pro', sans-serif;
+    background-color : ${props => props.theme.bgColor};
+    color : ${props => props.theme.textColor}
   }
   a {
     text-decoration : none;
