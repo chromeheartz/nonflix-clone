@@ -1,6 +1,8 @@
 import React from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { toDostate } from "./atoms";
 
 const Wrapper = styled.div`
   display : flex;
@@ -36,8 +38,59 @@ const Card = styled.div`
 const toDos = ["a", "b", "c", "d", "e", "f"]
 
 function App() {
+  // return되는 배열의 첫번째는 atom의 값, 두번쨰는 atom을 수정하는함수
+  const [toDos, setToDos] = useRecoilState(toDostate)
+  // 많은 Argument를 정보로 준다
+  const onDragEnd = ({ draggableId, destination, source } : DropResult) => {
+    // destination, source 로 어디에서 어디로가는지도 알수있음.
+    // dettnation이 없을경우 (같은 자리에 둘경우)
+    if(!destination) return
+    /*
+      typescript의 에러수정방법
+      onDrageEnd를 보면 어떻게 생겼는지 알려주는데
+      result와 provided라는 인수를 return한다.
 
-  const onDragEnd = () => {};
+      그 안의 DropList를 열어보면 destination과 같은 것들을
+      다 가져와야 하는것을 볼 수 있을것이다.
+
+      그래서 type을 DropResult로 정해주고 import를 한다
+
+      splice의 두개의 인수는 지우는것을 시작할 위치, 지울아이템의갯수
+      세개의 인수는 앞의 두개와 같은데 두번째에 0 을넣고 세번째에 아이템을 넣어주면
+      그 자리에 들어간다
+
+      * splice는 그 array 자체를 수정한다
+
+      * setToDos는 atom의 값을 수정할 2가지 방법을 전달해준다.
+      하나는 그냥 값을 보내주는것이고
+      다른 하나는 현재의 값을 arg로 주고 새로운 state를 return하는 함수를 주는것
+
+      ** 우리가 map을 할때 key 에 Number를 주는것이 익숙하지만
+      key와 draggableId는 무조건 같아야한다
+    */
+    /*
+      // 1) Delete item on source.index
+      console.log("Delete item on", source.index);
+      console.log(toDosCopy);
+      toDosCopy.splice(source.index, 1);
+      console.log("Deleted item");
+      console.log(toDosCopy);
+      // 2) Put back the item on the destination.index
+      console.log("Put back", draggableId, "on ", destination.index);
+      toDosCopy.splice(destination?.index, 0, draggableId);
+      console.log(toDosCopy);
+    */
+    setToDos(oldToDos => {
+      // mutate할 수 없기 때문에 카피해서 unpacking
+      const toDosCopy = [...oldToDos];
+      // delete item on source.index 
+      toDosCopy.splice(source.index, 1)
+      // put back the item on the destination.index
+      // draggableId 는 toDo
+      toDosCopy.splice(destination?.index, 0, draggableId);
+      return toDosCopy;
+    })
+  };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
@@ -46,7 +99,7 @@ function App() {
             {(magic) => (
               <Board ref={magic.innerRef} {...magic.droppableProps}>
                 {toDos.map((toDo,index) => (
-                  <Draggable draggableId={toDo} index={index}>
+                  <Draggable key={toDo} draggableId={toDo} index={index}>
                     {(magic) => (
                       <Card ref={magic.innerRef} {...magic.draggableProps} {...magic.dragHandleProps}>
                         {toDo}
@@ -108,6 +161,6 @@ export default App;
   이상하게 사이즈가 변하는 Board의 끝에서
   {magic.placeholder}를 둘것이다
 
-  
+
 
 */
