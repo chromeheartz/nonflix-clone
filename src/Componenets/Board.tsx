@@ -1,6 +1,8 @@
+import { useForm } from "react-hook-form"
 import { Droppable } from "react-beautiful-dnd"
 import styled from "styled-components"
 import DragabbleCard from "./DragabbleCard"
+import { ITodo } from "../atoms"
 
 const Wrapper = styled.div`
   width : 300px;
@@ -33,16 +35,34 @@ const Title = styled.h2`
   font-size: 18px;
 `
 
+const Form = styled.form`
+  width : 100%;
+  input {
+    width : 100%;
+  }
+`
+
 interface IBoardProps {
   // string으로 이루어진 array 라는뜻
-  toDos : string[];
+  toDos : ITodo[];
   boardId : string;
 }
 
+interface IForm {
+  toDo : string;
+}
+
 function Board({ toDos, boardId } : IBoardProps){
+  const { register, setValue, handleSubmit } = useForm<IForm>();
+  const onValid = ({ toDo }:IForm) => {
+    setValue("toDo", "");
+  }
   return (
     <Wrapper>
       <Title>{boardId}</Title>
+      <Form onSubmit={handleSubmit(onValid)}>
+        <input {...register(("toDo"), {required : true})} type="text" placeholder={`Add task on ${boardId}`}/>
+      </Form>
       <Droppable droppableId={boardId}>
         {/*
           두번쨰 argument
@@ -59,7 +79,7 @@ function Board({ toDos, boardId } : IBoardProps){
             {...magic.droppableProps}
           >
             {toDos.map((toDo, index) => (
-              <DragabbleCard key={toDo} index={index} toDo={toDo} />
+              <DragabbleCard key={toDo.id} index={index} toDoId={toDo.id} toDoText={toDo.text} />
             ))}
             {magic.placeholder}
           </Area>

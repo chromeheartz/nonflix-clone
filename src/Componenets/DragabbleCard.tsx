@@ -16,7 +16,8 @@ const Card = styled.div<{isDragging : boolean}>`
 `
 
 interface IDragabbleCardProps {
-  toDo : string;
+  toDoId : number;
+  toDoText : string;
   index : number;
 }
 
