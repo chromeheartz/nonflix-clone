@@ -49,6 +49,6 @@ export const toDostate = atom<IToDoState>({
   어디에 있는 card가 움직이는지 받아올 수 있으니, 그 id 정보를 이용해
   toDo의 내용을 받아야한다. 어딘가에 먼저 저장해두고 삭제한 뒤에 닷시
   추가해주어야한다
-  
+
 
 */

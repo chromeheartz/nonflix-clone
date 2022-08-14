@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form"
 import { Droppable } from "react-beautiful-dnd"
 import styled from "styled-components"
 import DragabbleCard from "./DragabbleCard"
-import { ITodo } from "../atoms"
+import { ITodo, toDostate } from "../atoms"
+import { useSetRecoilState } from "recoil"
 
 const Wrapper = styled.div`
   width : 300px;
@@ -53,8 +54,36 @@ interface IForm {
 }
 
 function Board({ toDos, boardId } : IBoardProps){
+  const setToDos = useSetRecoilState(toDostate);
   const { register, setValue, handleSubmit } = useForm<IForm>();
   const onValid = ({ toDo }:IForm) => {
+    const newToDo = {
+      id : Date.now(),
+      text : toDo,
+    }
+    /*
+      현재 속한 board의 정보만 업데이트 해야한다.
+      그래서 toDo를 만들때 내가 있는 board에만 올려줄 필요가 있다
+
+      만약 done이라면 done을 제외한 나머지는 제자리에 그대로 두고
+      done 안에 내 값만 마지막에 붙여줄것
+
+      그럼 현재 board 를 사용해서 copy하고 다시 state에 넣어주어야 한다.
+    */
+    // setter 함수는 value를 설정하기도 하지만 이전 Value에 기반해서 현재 value를 업데이트해줄수도있었다.
+    setToDos(allBoards => {
+      return {
+        ...allBoards,
+        // boardId가 done이면 "done"이 됨
+        // 이미 다른 todo를 가지고 있을 수 있기 때문에 
+        // 다른것들까지 replace되지않도록
+        [boardId] : [
+          // 새로운것이 맨 위로 오도록
+          newToDo,
+          ...allBoards[boardId]
+        ]
+      }
+    })
     setValue("toDo", "");
   }
   return (

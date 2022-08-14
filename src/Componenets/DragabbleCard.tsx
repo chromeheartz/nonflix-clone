@@ -21,10 +21,11 @@ interface IDragabbleCardProps {
   index : number;
 }
 
-function DragabbleCard({ toDo, index } : IDragabbleCardProps) {
+function DragabbleCard({ toDoId, toDoText, index } : IDragabbleCardProps) {
   // console.log(toDo, "has been rendered")
   return (
-    <Draggable key={toDo} draggableId={toDo} index={index}>
+    // draggableId 는 string이여야 하니 빈문자열 추가
+    <Draggable key={toDoId} draggableId={toDoId + ""} index={index}>
       {(magic, snapshot) => (
         <Card 
           isDragging={snapshot.isDragging}
@@ -32,7 +33,7 @@ function DragabbleCard({ toDo, index } : IDragabbleCardProps) {
           {...magic.draggableProps}
           {...magic.dragHandleProps}
         >
-          {toDo}
+          {toDoText}
         </Card>
       )}
     </Draggable>

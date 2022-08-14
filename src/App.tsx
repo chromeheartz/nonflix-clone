@@ -35,11 +35,13 @@ function App() {
     if(destination?.droppableId === source.droppableId) {
       // 같은보드에서 움직임
       setToDos(allBoards => {
-        console.log(allBoards)
         // source의 droppableId로 부터 array를 복사하는 과정
         const boardCopy = [...allBoards[source.droppableId]]
+        // 내가 옮기려고하는 to do object의 전체
+        // object를 지우기전에 잡아놓는다(grab)
+        const taskObj = boardCopy[source.index]
         boardCopy.splice(source.index, 1)
-        boardCopy.splice(destination?.index, 0, draggableId);
+        boardCopy.splice(destination?.index, 0, taskObj);
         // 나머지 보드까지 return
         return {
           ...allBoards,
@@ -61,9 +63,13 @@ function App() {
       // 다른보드에서 움직임
       setToDos((allBoards) => {
         const sourceBoard = [...allBoards[source.droppableId]];
+        const taskObj = sourceBoard[source.index]
         const destinationBoard = [...allBoards[destination.droppableId]];
         sourceBoard.splice(source.index, 1);
-        destinationBoard.splice(destination?.index, 0, draggableId);
+        // destinationBoard가 많은 toDo array로 이루어진 board여서
+        // draggableId를 쓼수 없게된다 string을 넣으려고하니 생기는 오류
+        // destinationBoard.splice(destination?.index, 0, draggableId);
+        destinationBoard.splice(destination?.index, 0, taskObj);
         return {
           ...allBoards,
           [source.droppableId] : sourceBoard,
