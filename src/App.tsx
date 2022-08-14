@@ -223,3 +223,18 @@ export default App;
     return toDosCopy;
   })
 */
+
+/*
+  ****** reference
+
+  ref는 react JS component를 통해서 HTML 요소를 지정하고, 가져올 수 있는 방법
+  다시말해서, 자바스크립트로부터 HTML 요소를 가져오고 수정하는 방법
+  props로 ref를 설정해주고
+  useRef<type> hook 을 통해서 타겟을 잡아줄 수 있다
+  const inputRef = useRef<HTMLInputElement>(null);
+  const onClick = () => {
+    inputRef.current?.focus()
+  }
+  이런식으로
+
+*/
