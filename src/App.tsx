@@ -31,6 +31,7 @@ function App() {
     console.log(info)
     // info로 부터 받아옴
     const { destination, draggableId, source } = info;
+    if(!destination) return;
     if(destination?.droppableId === source.droppableId) {
       // 같은보드에서 움직임
       setToDos(allBoards => {
@@ -54,6 +55,20 @@ function App() {
           다른 board들을 모두 return하면서 
           이제  doing은 board의 복사본이라고 말해주는것
         */
+      })
+    }
+    if(destination.droppableId !== source.droppableId) {
+      // 다른보드에서 움직임
+      setToDos((allBoards) => {
+        const sourceBoard = [...allBoards[source.droppableId]];
+        const destinationBoard = [...allBoards[destination.droppableId]];
+        sourceBoard.splice(source.index, 1);
+        destinationBoard.splice(destination?.index, 0, draggableId);
+        return {
+          ...allBoards,
+          [source.droppableId] : sourceBoard,
+          [destination.droppableId] : destinationBoard
+        }
       })
     }
 
