@@ -4,7 +4,6 @@ import DragabbleCard from "./DragabbleCard"
 
 const Wrapper = styled.div`
   width : 300px;
-  padding : 20px 10px;
   padding-top : 10px;
   background-color : ${props => props.theme.boardColor};
   border-radius :5px;
@@ -21,9 +20,10 @@ interface IAreaProps {
 // isDraggingOver라는 prop을 받을것이라고 말하는것
 // const Area = styled.div<{isDraggingOver : boolean}>`
 const Area = styled.div<IAreaProps>`
-  background-color : ${props => props.isDraggingOver ? "pink" : props.isDraggingFromThis ? "red" : "blue"};
+  background-color : ${props => props.isDraggingOver ? "#dfe6e9" : props.isDraggingFromThis ? "#b2bec3" : "transparent"};
   flex-grow : 1;
   transition : background-color 0.3s ease-in-out;
+  padding : 20px;
 `
 
 const Title = styled.h2`
@@ -46,7 +46,7 @@ function Board({ toDos, boardId } : IBoardProps){
       <Droppable droppableId={boardId}>
         {/*
           두번쨰 argument
-          
+
           info 의 오른쪽클릭 type definition을 보면
           type정의에 뭘 얻을지 알 수 있다.
         */}
