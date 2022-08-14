@@ -8,7 +8,7 @@ import Board from "./Componenets/Board";
 const Wrapper = styled.div`
   display : flex;
   max-width : 680px;
-  width : 100%;
+  width : 100vw;
   margin : 0 auto;
   justify-content : center;
   align-items : center;
@@ -16,9 +16,10 @@ const Wrapper = styled.div`
 `
 
 const Boards = styled.div`
-  display : grid;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   width : 100%;
-  grid-template-columns : repeat(3, 1fr);
   gap : 10px;
 `
 
@@ -26,11 +27,36 @@ function App() {
   // return되는 배열의 첫번째는 atom의 값, 두번쨰는 atom을 수정하는함수
   const [toDos, setToDos] = useRecoilState(toDostate)
   // 많은 Argument를 정보로 준다
-  const onDragEnd = ({ draggableId, destination, source } : DropResult) => {
-    // destination, source 로 어디에서 어디로가는지도 알수있음.
-    // dettnation이 없을경우 (같은 자리에 둘경우)
-    if(!destination) return
-   
+  const onDragEnd = (info : DropResult) => {
+    console.log(info)
+    // info로 부터 받아옴
+    const { destination, draggableId, source } = info;
+    if(destination?.droppableId === source.droppableId) {
+      // 같은보드에서 움직임
+      setToDos(allBoards => {
+        console.log(allBoards)
+        // source의 droppableId로 부터 array를 복사하는 과정
+        const boardCopy = [...allBoards[source.droppableId]]
+        boardCopy.splice(source.index, 1)
+        boardCopy.splice(destination?.index, 0, draggableId);
+        // 나머지 보드까지 return
+        return {
+          ...allBoards,
+          // javascript가 source.droppableId가 "doing"이면 여기에
+          // "doing" 으로 넣어줄것이다
+          [source.droppableId] : boardCopy
+        };
+        /*
+          정리 
+          const boardCopy = [...allBoards["Doing"]]
+          이런식으로 자바스크립트가 넣어주고 doing board를 복사해서
+          그 복사본을 대체하고 변형하고
+          다른 board들을 모두 return하면서 
+          이제  doing은 board의 복사본이라고 말해주는것
+        */
+      })
+    }
+
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -157,7 +183,28 @@ export default App;
   이런식으로 응용해서 사용해주면
   boardId가 있고 그 boardId가 각각 가지는 자식들도 볼 수 있게 되었다.
 
+*/
 
+/*
+  onDragEnd 에 들어간 함수들
 
+  * 한 보드안에서만 움직일떄 ( 보드가 한개일때 )
+  기존 한개일때는 매개변수에
+  const onDragEnd = ({ destination, draggableId, source } : DropResult) => {
+  이런식으로 받아와서 그안에서 어디로 가는지에 대한 위치를 찾아냈음
 
+  destination, source 로 어디에서 어디로가는지도 알수있음.
+  dettnation이 없을경우 (같은 자리에 둘경우)
+  if(!destination) return
+
+  setToDos(oldToDos => {
+    // mutate할 수 없기 때문에 카피해서 unpacking
+    const toDosCopy = [...oldToDos];
+    // delete item on source.index 
+    toDosCopy.splice(source.index, 1)
+    // put back the item on the destination.index
+    // draggableId 는 toDo
+    toDosCopy.splice(destination?.index, 0, draggableId);
+    return toDosCopy;
+  })
 */
