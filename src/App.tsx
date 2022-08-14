@@ -30,7 +30,7 @@ function App() {
   const onDragEnd = (info : DropResult) => {
     console.log(info)
     // info로 부터 받아옴
-    const { destination, draggableId, source } = info;
+    const { destination, source } = info;
     if(!destination) return;
     if(destination?.droppableId === source.droppableId) {
       // 같은보드에서 움직임
