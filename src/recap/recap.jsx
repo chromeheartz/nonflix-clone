@@ -593,7 +593,49 @@
   2번 Box의 entry가 거의 동시에 실행된다는것이다
   animation이 거의 함께 시작함
 
-  
+  이것을 바꾸고 싶으면 exitBeforeEnter를 넣어주면된다
+  이것은 exit를 실행시키고 exit가 끝나면 다음 element를 불러올수있게하는것
+
+  ***********
+
+  onst box = {
+    entry : (isBack : boolean) => ({
+        x : isBack ? -300 : 300,
+        opacity : 0,
+        sacle : 0,
+    }),
+    center : {
+      x : 0,
+      opacity : 1,
+      scale : 1,
+      transition : {
+        duration : 0.5
+      }
+    },
+    exits : (isBack : boolean) => ({
+      x : isBack ? 300 : -300,
+        opacity : 0,
+        sacle : 0,
+        rotateX : 100,
+        transition : {
+          duration : 0.5
+        }
+    }),
+  }
+
+
+  * APP *
+
+  const [visible, setvisible] = useState(1);
+  const [back, setBack] = useState(false);
+  const nextPlease = () => {
+    setBack(false);
+    setvisible(prev => prev === 10 ? 10 : prev+1);
+  }
+  const prevPlease = () => {
+    setBack(true);
+    setvisible(prev => prev === 10 ? 10 : prev-1);
+  }
 
 */
 
