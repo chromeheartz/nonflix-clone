@@ -487,6 +487,45 @@
 */
 
 
+
+/*
+
+  * slider 예시 코드
+  https://codesandbox.io/s/framer-motion-image-gallery-pqvx3?from-embed
+
+  #7.12 ~ 7.13 slider part
+
+  AnimatePresence만 이용해 슬라이더 만들기
+  어떻게 한 Box씩 보여줄 수 있을까.
+  visible 이라는 state를 먼저 만들것이다
+
+  visible의 값과 i 의 값이 같은지 확인하고
+  박스를 보여줄수 있도록 할것이다
+
+  i === visible ? 라는 컨디션만 넣어서 바꾸는것이다
+
+  또한 nextPlease라는 함수를 만들어 state값을 바꾸어줄것인데
+  10 이 넘어가게되면 그대로 return시켜준다
+
+  box variants를 하나 만들어서
+  invisible, visible, exits를 설정해주면 간단하게
+  슬라이드가 완성된다
+
+  next를 구현한것과 똑같이 prev를 구현하면
+  animation이 같기 때문에 오른쪽으로 와서 왼쪽으로 사라진다
+  뒤로 돌아가는데도.
+  뒤로 돌아갈때는 반대방향으로 돌아가게 바꿔볼것이다
+
+*/
+
+
+/*
+
+
+
+
+*/
+
 /*
 
 
