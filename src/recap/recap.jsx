@@ -75,9 +75,73 @@
   initial="start" 처럼 오브젝트 내의 property이름을 적어주면 된다
   animate에는 "end" 의 이름을 넣어주면된다
 
+  const myVars = {
+    start : { scale : 0 },
+    end : { scale : 1, rotateZ : 360, transition : { type : "spring", delay : 1 } }
+  }
+
+  <Box 
+    variants={myVars}
+    initial="start"
+    animate="end"
+  />
+
   * 여기서 한것은 '설정'으로 분리된 오브젝트로 옮긴것이다
   오브젝트, 프로퍼티이름은 중요하지않고 전달만 잘해주면된다.
 
+  * 7.4의 요점은 컴포넌트가 자식들을 갖고 있을 때를 보는것.
+  기본값으로 어떤 설정도 없을 때 부모컴포넌트가 variants,initial,animate를
+  가지고 있다면 기본동작으로 motion은 이것을 복사해서
+  자식들에게 자동으로 붙여줄것이다.*자식들에게만
+
+  ** 자식들에 대한 애니메이션을 만들때 제일 중요한것은
+  시작점 끝점의 이름이 같아야한다 
+  *** 이유는 부모가 자식에게 initial="start", animate="end"를 그대로
+  전달해주기 때문에. 붙여넣을 필요가 없다는것
+
+  이렇게하면 자식들의 설정을 다시 해줄수 있다는것을 아는데
+  현재 예제에서는 박스가 1개씩 따로따로 올라오고있다. 그것을 위해서 설정을 다시할것
+
+  * 공식문서의 Orchestration을 보면 그 중에 delay가 있다.
+  다른것은 delayChildren(자식들에게 딜레이를 주는것)이 있다
+
+  만약 원한다면 부모 variants내에서 모든 자식들에게 delay를 줄 수 있다.
+
+  *** 하지만 가장좋은점은 staggerChildren이다.
+  예를들어 delay를 다 다르게 주어야 할 때 stagger하는것
+  staggerChildren에 0.5를 주면 자동적으로 motion은 0.5씩 증가시키면서
+  자동적으로 넣어준다
+
+  이것이 정말 motion이 좋은점중 하나이다.
+
+  const boxVariants = {
+    start : {
+      opacity : 0,
+      scale : 0.5,
+    },
+    end : {
+      opacity : 1,
+      scale : 1,
+      transition : {
+        type : "spring",
+        duration : 0.5,
+        bounce : 0.5,
+        delayChildren : 0.5,
+        staggerChildren : 0.2
+      }
+    }
+  }
+
+  const circleVariants = {
+    start : {
+      opacity : 0,
+      y : 10,
+    },
+    end : {
+      opacity : 1,
+      y : 0,
+    }
+  }
 
 */
 
