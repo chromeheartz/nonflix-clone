@@ -253,7 +253,7 @@
 
 /*
 
-  #7.7 ~ 7.8 MotionValues part
+  #7.7 ~ 7.9 MotionValues part
 
   MotionValue는 애니메이션 내의 수치를 트래칭할때 필요하다.
   const x = useMotionValue(0)
@@ -336,7 +336,58 @@
     dragSnapToOrigin
   />
 
+  ** 7.9 
 
+  Wrapper의 배경색을 바꾸어줄것인데 알다시피
+  motion에서 애니메이트를 하고싶을때 styled.div를 애니메이트 시킬수 없으니
+  motion으로 한번 감싸준다.
+
+  Gradient로 rotate를 했던것처럼 배경색을 설정해주고
+  Wrapper에 style로 보내준다.
+
+  ****** scroll listen
+
+  useViewportScroll은 스크롤의 MotionValue를 넘겨줄것이다
+  이것은 두가지를 넘겨줄것이다.
+
+  - scrollX, scrollY
+  - scrollXProgress, scrollYProgress
+
+  우리는 vertical만 할것이여서 scrollY에 집중할것이다.
+  scrollY는 픽셀단위인 수직 스크롤이 될것이고,
+  scrollYProgress는 0과 1사이 값이다
+
+  const { scrollY, scrollYProgress } = useViewportScroll();
+  useEffect(() => {
+    scrollY.onChange(() => {console.log(scrollY.get(), scrollYProgress.get())})
+  }, [scrollY, scrollYProgress]
+
+  이런식으로 Wrapper의 height를 높여놓고 확인해보면 콘솔에 찍히는 값들의
+  차이점이 보일것이다.
+  
+  ********
+
+  MotionValue와 useTransform을 활용해서
+  스크롤, x축에 대한 애니메이션을 걸어보았다.
+
+  const x = useMotionValue(0);
+  const rotateZ = useTransform(x,[-400, 400], [-360, 360]);
+  const gradient = useTransform(x, [-400, 400], 
+  [
+    'linear-gradient(135deg, rgb(0, 210, 238), rgb(0, 83, 238))',
+    'linear-gradient(135deg, rgb(0, 238, 155), rgb(238, 178, 0))'
+  ]);
+  const { scrollYProgress } = useViewportScroll();
+  // 박스가 너무 작아서 한번 더 값을 transform시켜준다
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 5])
+
+  <Wrapper style={{background : gradient}}>
+      <Box 
+      style={{x, rotateZ, scale }}
+      drag="x"
+      dragSnapToOrigin
+    />
+  </Wrapper>
 
 */
 

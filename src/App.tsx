@@ -1,13 +1,14 @@
 import React, { useEffect, useRef } from "react"
 import styled from "styled-components";
-import { motion, useMotionValue, useTransform } from "framer-motion"
+import { motion, useMotionValue, useTransform, useViewportScroll } from "framer-motion"
 
-const Wrapper = styled.div`
-  height: 100vh;
+const Wrapper = styled(motion.div)`
+  height: 200vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
+  background : linear-gradient(135deg, rgb(238,0,153), rgb(221,0,238));
 `;
 
 // styled components + motion
@@ -26,56 +27,23 @@ const boxVariants = {
 
 function App() {
   const x = useMotionValue(0);
-  const scaleValue = useTransform(x,[-400, 0, 400], [2, 1, 0.1]);
-  useEffect(() => {
-    // x.onChange(() => console.log(x.get()))
-    scaleValue.onChange(() => console.log(scaleValue.get()));
-  }, [x])
+  const rotateZ = useTransform(x,[-400, 400], [-360, 360]);
+  const gradient = useTransform(x, [-400, 400], 
+  [
+    'linear-gradient(135deg, rgb(0, 210, 238), rgb(0, 83, 238))',
+    'linear-gradient(135deg, rgb(0, 238, 155), rgb(238, 178, 0))'
+  ]);
+  const { scrollYProgress } = useViewportScroll();
+  // 박스가 너무 작아서 한번 더 값을 transform시켜준다
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 5])
   return (
-    <Wrapper>
-      {/* basic animation */}
-      {/* <Box  
-        initial={{ scale : 0}}
-        animate={{ scale : 1, rotateZ : "360deg" }}
-        transition={{type : "spring", delay : 1 }}
-      /> */}
-
-      {/* variants */}
-      {/* <Box variants={boxVariants} initial="start" animate="end" >
-        <Circle variants={circleVariants} />
-        <Circle variants={circleVariants} />
-        <Circle variants={circleVariants} />
-        <Circle variants={circleVariants} />
-      </Box> */}
-
-      {/* while */}
-      {/* <Box 
-        variants={boxVariants}
-        whileHover="hover"
-        whileTap="click"
-      /> */}
-
-      {/* dragging */}
-      {/* <BiggerBox ref={biggerBoxRef}>
-        <Box 
-          drag
-          dragSnapToOrigin
-          dragConstraints={biggerBoxRef}
-          dragElastic={0.5}
-          variants={boxVariants}
-          whileHover="hover"
-          whileTap="click"
-          whileDrag="drag"
-        />
-      </BiggerBox> */}
-
+    <Wrapper style={{background : gradient}}>
       {/* MotitonValues */}
       <Box 
-        style={{x : x, scale : scaleValue}}
+        style={{x, rotateZ, scale }}
         drag="x"
         dragSnapToOrigin
       />
-
     </Wrapper>
   )
 }
