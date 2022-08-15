@@ -147,7 +147,6 @@
 
 */
 
-
 /*
 
   #7.5 ~ 7.6 Gestures part
@@ -254,6 +253,34 @@
 
 /*
 
+  #7.7 ~ 7.8 MotionValues part
+
+  MotionValue는 애니메이션 내의 수치를 트래칭할때 필요하다.
+  const x = useMotionValue(0)
+  이런식으로 useMotionValue의 값을 만들어주고
+  Box에 style로 {{ x : x }} 나 {{ x }} 이런식으로 shotchut으로 한다
+
+  이제 유저가 Box를 드래그 할때마다 이 x값은 업데이트될것이다
+  x좌표에 따라서. useMotionValue의 x와 style의 x를 연결한것
+
+  console으로 찍어보는데 처음에만 콘솔이 찍히고 그 후는 안나온다
+  그 이유는 MotionValue가 특별하기 때문
+  MotionValue가 업데이트 될때
+  React Rendering Cycle(렌더링 사이클)을 발동시키지 않을것이다
+
+  그 말은 MotionValue가 ReactJS State(상태)로 살지 않는다는것
+  State가 아님.
+  그래서 MotionValue가 바뀌어도 컴포넌트가 렌더링되지않는다.
+
+  useEffect(() => {
+    x.onChange(() => console.log(x.get()))
+  }, [x])
+
+  useEffect를 사용해서 x에 onChange 이벤트 리스너를 걸어주고
+  x.get()으로 값을 가져온다
+
+  <button onClick={() => x.set(200)}>Click me</button>
+  이렇게 set으로 설정해줄수도있다.
   
 
 */
