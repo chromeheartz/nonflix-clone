@@ -34,52 +34,59 @@ const Box = styled(motion.div)`
 `;
 
 const box = {
-  invisible : {
-    x : 300,
-    opacity : 0,
-    sacle : 0,
-  },
-  visible : {
+  entry : (isBack : boolean) => ({
+      x : isBack ? -300 : 300,
+      opacity : 0,
+      sacle : 0,
+  }),
+  center : {
     x : 0,
     opacity : 1,
     scale : 1,
     transition : {
-      duration : 1
+      duration : 0.5
     }
   },
-  exits : {
-    x : -300,
-    opacity : 0,
-    sacle : 0,
-    rotateX : 100,
-    transition : {
-      duration : 1
-    }
-  }
+  exits : (isBack : boolean) => ({
+    x : isBack ? 300 : -300,
+      opacity : 0,
+      sacle : 0,
+      rotateX : 100,
+      transition : {
+        duration : 0.5
+      }
+  }),
 }
 
 function App() {
   const [visible, setvisible] = useState(1);
-  const nextPlease = () => setvisible(prev => prev === 10 ? 10 : prev+1)
+  const [back, setBack] = useState(false);
+  const nextPlease = () => {
+    setBack(false);
+    setvisible(prev => prev === 10 ? 10 : prev+1);
+  }
+  const prevPlease = () => {
+    setBack(true);
+    setvisible(prev => prev === 10 ? 10 : prev-1);
+  }
   return (
     // motion value
     // <Wrapper style={{background : gradient}}>
     <Wrapper>
-      <AnimatePresence>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(i => (
-          i === visible ? (
+      {/* slider */}
+      <AnimatePresence exitBeforeEnter custom={back}>
           <Box 
+            custom={back}
             variants={box}
-            initial="invisible"
-            animate="visible"
+            initial="entry"
+            animate="center"
             exit="exits"
-            key={i}
+            key={visible}
           >
-            {i}</Box>
-          ) : null
-        ))}
+            {visible}</Box>
       </AnimatePresence>
       <button onClick={nextPlease}>next</button>
+      <button onClick={prevPlease}>prev</button>
     </Wrapper>
   )
 }

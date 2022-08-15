@@ -516,6 +516,85 @@
   뒤로 돌아가는데도.
   뒤로 돌아갈때는 반대방향으로 돌아가게 바꿔볼것이다
 
+  우리가 현재 한 방식은
+  Box의 숫자가 visible이면 Box를 생성하고 아니면 null을 return했다
+  1개의 Box와 9개의 null을 만든것
+  이런방식이 필요하지 않은게
+  Reactjs는 key를 보고 각 Box가 고유하다고 생각한다
+  key를 바꾸면 react js는 이전 element가 사라지고
+  새 element가 생겼다고 인식할것이다 이점을 유리하게 사용할것이다.
+
+  우리는 현재 숫자로 이루어진 visible이란 state를 가지고있어서
+  key 에 넣어줄것이다
+  
+  그렇게되면 element의 key를 바꿔주는것만으로
+  element가 사라졌다고 생각한다
+  element가 사라졌다고 생각하면 exit animation이 실행될것이다
+
+  * react 가 이전 component를 삭제하고 새것을 보여주는데에는
+  initial, animate, exit 세가지 애니메이션이 다 적용된다
+
+  ******* CUSTOM
+
+  custom은 variants에 데이터를 보낼 수 있게 해주는 property이다.
+  예를들면 우리가 가고자 하는 방향에 따라서
+  entry와 exit를 바꾸면 될것같다
+
+  custom={} 안에 들어갈 값은 0이나 1이나 뭐든가능하다.
+  custom을 쓰면 variants를 바꿀 수 있다
+  variants는 원래 여러 object를 가진 Object이지만
+
+  *******
+
+  custom을 사용하고 싶다면 variant object를 return하는
+  function으로 바꾸어주어야한다.
+
+  일단 next,prevPlease 함수에 setBack이라는 state를
+  만들어 false, true를 구분할 수 있도록 한다
+
+  그리고 custom={back}을 넣어준다
+  Motion 의 규칙에 따라 
+  custom을 AnimatePresence안에도 넣어주어야한다.
+
+  entry : (back : boolean) => ({
+      x : 300,
+      opacity : 0,
+      sacle : 0,
+  }),
+
+  여기서 {
+    x : 300,
+    opacity : 0,
+    sacle : 0,
+  }
+  이렇게 해주면 return하지 않기 때문이다 이 object를
+  return하고 싶으면 괄호로 감싸야한다
+
+  물론 {
+    return {
+      x : 300,
+      opacity : 0,
+      sacle : 0,
+    }
+  }
+
+  이렇게도 가능하다.
+    
+  이제 isBack에 따라서 entry의 내용을 바꿀 수 있다
+
+  **** 
+  prev 를 누르면 back은 true가 되고,
+  back이 true가 되면 variant의 custom은 true를 받을것이다.
+
+  **** 
+
+  exitBeforeEnter 라는 prop이 있다
+  현재는 next를 누르면 1번 Box의 animate가 실행되는 동안
+  2번 Box의 entry가 거의 동시에 실행된다는것이다
+  animation이 거의 함께 시작함
+
+  
+
 */
 
 
