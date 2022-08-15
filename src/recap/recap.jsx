@@ -281,7 +281,62 @@
 
   <button onClick={() => x.set(200)}>Click me</button>
   이렇게 set으로 설정해줄수도있다.
-  
+
+  ** transformation
+
+  현재 브라우저를 기준으로
+  -800 => 2
+  -400 => 1.5
+  0 => 1
+  400 => 0.5
+  800 => 0
+
+  이런식으로 어떻게 크기를 조정해볼수 있을까
+  x값들을 가져와서 바꿀수있도록 할것이다
+
+  useTransform 훅을 사용할것이다
+  일단 값을 하나 받는데, 이건 그 값의 어떤 제한값과 원하는 출력갑을 받을것이다
+  첫번째로 값을 넣어준다. 현재는 x인데
+  이 x는 우리가 드래그 할때마다 새로 설정되는 값이라는것을 알고있다
+
+  그 후에 두번째로 Array(배열)을 넣을것이다
+  그리고 난 세개의 값들을 원한다는것을 알릴것이다
+
+  세번째 인자는 바로 output(출력값)이다
+
+  const scaleValue = useTransform(x,[-400, 0, 400], [2, 1, 0.1]);
+  react에서는 이런코드를 interpolation이라고 부른다
+  한 값을 받아와서, 검토하길 원하는 입력값, 얻길 원하는 출력값들을 놓음
+  논리적으로 생각하면 입력값, 출력값들은 갯수가 같아야한다.
+
+
+  useEffect안에
+  scaleValue.onChange(() => console.log(scaleValue.get())); 로 확인해보면됨
+
+  추후에 style에 scale : scaleValue 로 이어주면
+  잘 작동되는것을 볼 수 있다.
+
+  * 새로운 코드들이나 useTransform을 잡아주는것,
+  useEffect안에서 onChange 이벤트로 인해서 scaleValue를 찍어보는것
+  등 새로운것들이좀 많아서 공부가 좀 필요할것같다.
+
+
+  *********
+
+  const x = useMotionValue(0);
+  const scaleValue = useTransform(x,[-400, 0, 400], [2, 1, 0.1]);
+  useEffect(() => {
+    // x.onChange(() => console.log(x.get()))
+    scaleValue.onChange(() => console.log(scaleValue.get()));
+  }, [x])
+
+  <Box 
+    style={{x : x, scale : scaleValue}}
+    drag="x"
+    dragSnapToOrigin
+  />
+
+
 
 */
 
