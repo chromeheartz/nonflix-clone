@@ -150,6 +150,37 @@
 
   #7.5 ~ 7.6 Gestures part
 
+  * while 
+
+  while prop을 이용해서 이벤트를 listen 할것이다
+  props자리에 while이라고 치면 많은 이벤트 들이 나오는데 예를들어
+  whilehover={{ scale : 2 }}를 하면 hover되었을때 2배가 된다
+
+  Variants를 활용할것이다 whileHover에 오브젝트를 넣는대신에
+  Hover, Tap 에 관련된 두 Variants를 만들것이다
+
+  * variants를 사용하는것은 아주 좋다
+  왜냐면 문자열을 넣기만 하면되기 때문.
+  예를들어 아주 큰 어플리케이션에서 컴포넌트는 어떤 state를 가지게 될 텐데
+  어떤 condition(조건문)이 필요할 수 있다
+  그럴때에는 그냥 {condition ? "hover" : "other"}
+  이런식으로 그냥 문자열만 넣어주면 어딘가에 있는 애니메이션의 설정을
+  편하게 가질 수 있는것이다.
+
+  const boxVariants = {
+    hover : { scale : 1.5, rotateZ : 90 },
+    click : { scale : 1, borderRadius : "100px" },
+  }
+
+  *** dragging
+
+  drag 라는 속성을 주는것만으로 드래그가 가능해진다.
+  whileDrag라는 속성으로 드래그 하는동안 바꿔줄수도있다.
+
+  * 예륻들어 백그라운드 색을 "blue"이렇게 주는것보다
+  rgba처럼 숫자값으로 넣어주면 motion은 그 값들을 애니메이트 해줄것이다
+
+
 */
 
 /*
