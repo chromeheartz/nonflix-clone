@@ -451,6 +451,45 @@
 
 /*
 
+    #7.11 AnimatePresence
   
+    AnimatePresence는 컴포넌트인데
+    React js App 에서 사라지는 컴포넌트를 animate한다
+
+    버튼을 클릭했을때 state를 바꾸게 해주어
+    Box가 보이고 안보이게 하는것은 쉽다.
+    이제 하고싶은건 Box가 없어질때 Box를 animate하는것이다
+
+    {showing ? <Box /> : null}
+    하지만 이렇게 하면 showing이 False가 되는 순간 null으로 바뀌는것이
+    실행되기 떄문에 animate를 위한 공간이없다(motion을 쓸때를 제외하면)
+
+    AnimatePresence의 딱 한가지 규칙은
+    * visible 상태여야 한다는것이다.
+    그리고 AnimatePresence의 내부에는
+    condition(조건문)이 있어야한다.
+
+    AnimatePresence는 안쪽에 나타나거나 사라지는게 있다면
+    그것을 animate할 수 있도록 체크해줄것이다
+    
+    현재 리액트 18에서는 지원하지 않아
+    https://velog.io/@keumky1/2.-Framer-Motion-%EC%9D%91%EC%9A%A9-layout-AnimatePresence
+    를 보면 이해가 될것이다 props로 던져줘야하는것이있음.
+
+    * AnimatePresence를 사용하면 React 트리에서 컴포넌트가 제거될 때
+    제거되는 컴포넌트에 애니메이션 효과를 줄 수 있다.
+    React에는 다음과 같은 쑤명주기 메서드가 없기 때문에
+    종료 애니메이션을 활성화 해야한다.
+
+    exit 
+    이 컴포넌트가 트리에서 제거될 때 애니메이션 할 대상
+
+*/
+
+
+/*
+
+
+
 
 */
