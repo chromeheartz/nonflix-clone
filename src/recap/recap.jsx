@@ -24,7 +24,12 @@
   package.json 에서 start,build,test를
   'react-scripts' 라는 단어를 craco로 바꾸어주어야한다.
 
+*/
+
+/*
+
   #7.2 basic animation
+  
   styled component랑 motion을 합치려면
   styled(motion."HTMLTag") 이런식으로 써주면 된다
 
@@ -51,5 +56,54 @@
   
   문서를 보면 transition의 속성들도 볼수 있다
 
+*/
+
+/*
+
+  #7.3 ~ 7.4 variants part
+
+  현재 Box의 animation은 prop에 맞추어져있다
+  
+  만약 variants를 쓰면 컴포넌트가 더 깔끔해질것이다
+  variants는 기본적으로 애니메이션의 stage같은것이다
+  variatns는 두가지 stage를 가질것이다
+  initial, finish
+
+  transition은 finish 파트에서 넣는것이 가능하다
+  variants에 오브젝트 이름을 넣어주고
+  inistial state의 prop은 initial이니
+  initial="start" 처럼 오브젝트 내의 property이름을 적어주면 된다
+  animate에는 "end" 의 이름을 넣어주면된다
+
+  * 여기서 한것은 '설정'으로 분리된 오브젝트로 옮긴것이다
+  오브젝트, 프로퍼티이름은 중요하지않고 전달만 잘해주면된다.
+
+
+*/
+
+
+/*
+
+  #7.5 ~ 7.6 Gestures part
+
+*/
+
+/*
+
+  
+
+*/
+
+
+/*
+
+  
+
+*/
+
+
+/*
+
+  
 
 */
