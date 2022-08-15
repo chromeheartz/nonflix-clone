@@ -367,7 +367,7 @@
   
   ********
 
-  MotionValue와 useTransform을 활용해서
+  MotionValue와 useTransform, useViewportScroll을 활용해서
   스크롤, x축에 대한 애니메이션을 걸어보았다.
 
   const x = useMotionValue(0);
@@ -394,7 +394,57 @@
 
 /*
 
-  
+  #7.10 SVG Animation
+
+  모든 svg는 path를 가지고 있고, path는 fill을 가지고 있다.
+  path의 fill에 currentColor는 svg의 color를 가질것이라는뜻.
+
+  svg path의 opacity나 stroke를 animation하려면
+  그냥 Path가 아닌 motion.path를 써주어야한다.
+
+  inital, animate, transition을 Prop으로 던지면서 쉽게 
+  설정할수 있다.
+
+  다음으로 할것은 pathLength라는것을 수정할것이다
+  pathLEngth는 현재 우리 위치까지의 path의 길이를 나타낸다.
+
+  fill속성으로 opacity를 바꾸는 느낌을 주었고 pathLength를 0 - 1 로
+  잡아주는것만으로 그려지는 효과가 나게된다
+
+  * 원한다면 variant안에 넣어줄 수 있다
+  또한         
+    stroke="white"
+    strokeWidth="4"
+  같은 style들도 Svg에 넣어줄 수 있다
+
+  ******  특정 property의 animation duration을 단독으로 변경하는 방법
+  현재는 stroke와 fill이 같이 하게 되는데
+  한가지를 조금 기다리고 있게 하고싶다면.
+
+  예) 먼저 path를 그리고 끝나면 fill을 할 수 있게
+  transition 의 default 객체를 하나 넣어주고 default값을 설정해주고
+  직접적으로 어떤 propery를 어떻게 얼마나 animate할 지 객체를 만들어 특정할 수 있다
+
+  const Svg = styled.svg`
+    width : 300px;
+    height : 300px;
+    path {
+      stroke : white;
+      stroke-width : 4;
+    }
+  `
+
+  const svg = {
+    from  : {
+      fill : "rgba(255,255,255, 0)",
+      pathLength : 0
+    },
+    to : {
+      fill : "rgba(255, 255, 255, 1)",
+      pathLength : 1,
+    }
+  }
+
 
 */
 
