@@ -114,6 +114,8 @@
 
   이것이 정말 motion이 좋은점중 하나이다.
 
+  *******
+
   const boxVariants = {
     start : {
       opacity : 0,
@@ -180,6 +182,73 @@
   * 예륻들어 백그라운드 색을 "blue"이렇게 주는것보다
   rgba처럼 숫자값으로 넣어주면 motion은 그 값들을 애니메이트 해줄것이다
 
+  ** drag constraint
+
+  constarint(제약)을 하기위해서 할 수 있는것은
+  스크롤을 잠궈버리는것이다. 
+  drag="x" 이런식으로 하면 x축으로만 이동이가능하다.
+  마찬가지로 y축도 가능
+
+  dragConstraints prop을 사용해줄것인데
+  기본적으로 어떤 Box를 만들 수 있다 (제약, 드래깅이 허용될 수 있는 영역)
+  dragConstraints={{ top : -50, bottom : 50, left : -50, right : 50}}
+  만약 다 0으로 준다면 어떠한 힘에 의해 중간으로 돌아오게 될것이다
+
+  biggerbox 안에 box를 넣고 
+  overflow hideen을 주면 예제처럼 잡히게된다
+
+  * motion을 써서 중앙박스가 바깥쪽 박스에 의해 제약이 되게 만드는 법
+  큰박스와 작은 박스의 수를 계산해서 제약을 걸어버리면 됨.
+
+  하지만 좀 더 편하게 하려면 'ref'를 사용하면 된다
+
+  ref로 biggerBox를 잡아주고
+  제약이 biggerBoxRef에 맞춰지도록 했다.
+  레퍼런스를 만들고 작은 Box에 제약을 걸어주었는데
+  biggerBox의 가장자리까지라고 설정한것이다.
+
+  * shortCut
+  box가 드래그를 한 다음에 중앙으로 돌아가게 하고싶다면
+  2가지 방법이 있다
+
+  1. dragSnapToOrigin 이라는 것을 prop으로 걸어주면
+  벽에서 바운스 되는것이 아니라 원래위치로 돌아가게 된다
+
+  2. dragElastic은 0과 1사이의 값이여야한다
+  Elastic은 기본적으로 '당기는 힘' 같은게 있다는 의미이다
+  기본값은 0.5 인데 0.5로 줘보면 포인터한테 가까이 다가오지않고
+  조금 멀리서 따라오게된다.
+  1로 하게되면 내가 데리고 가는만큼 따라올것이고 놓게되면
+  다시 중앙으로 돌아올것이다.
+  0를 하게되면 Elastic이 없다는 뜻이라서 안쪽에 머물게 될것이다
+  
+
+  *******
+
+  const BiggerBox = styled(motion.div)`
+    width : 400px;
+    height : 400px;
+    background-color: rgba(255,255,255,0.3);
+    border-radius : 40px;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+    overflow : hidden;
+  `
+
+  const biggerBoxRef = useRef<HTMLDivElement>(null);
+  <BiggerBox ref={biggerBoxRef}>
+    <Box 
+        drag
+        dragSnapToOrigin
+        dragConstraints={biggerBoxRef}
+        dragElastic={0.5}
+        variants={boxVariants}
+        whileHover="hover"
+        whileTap="click"
+        whileDrag="drag"
+    />
+  </BiggerBox>
 
 */
 
