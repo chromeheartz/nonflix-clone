@@ -598,7 +598,8 @@
 
   ***********
 
-  onst box = {
+  
+  const box = {
     entry : (isBack : boolean) => ({
         x : isBack ? -300 : 300,
         opacity : 0,
@@ -623,7 +624,6 @@
     }),
   }
 
-
   * APP *
 
   const [visible, setvisible] = useState(1);
@@ -642,8 +642,49 @@
 
 /*
 
+  #7.14 you Need to Watch This
 
+  state를 하나 만들어서 wrapper가 클릭될시에
+  Box 자체에 style을
+  justifyContent : clicked ? "center" : "flex-start"
+  이런식으로 해주었다
 
+  이제 새로운 Prop을 해볼것인데
+  layout이라는 prop이다. 이 prop을 element에게 주면
+  그 element의 layout이 바뀔 때 알아서 animate가 된다
+
+  만약 css때문에 layout이 바뀌면 그냥 animation이 만들어지는것
+  center부터 flex-start까지
+
+  이제 어떤 element가 위치를 바꿀지 생각해보면
+  Circle이다. 그래서 Cirle에 layout만 써주면된다
+
+  Framer Motion은 무언가 외부의 힘에 의해 바뀐것을 감지한다.
+  
+  style이나 css는 state에 의해 바뀔 수 있는데 그 변화가
+  element를 움직이게 할 수 있는것이다.
+  이것도 좋지만 이것은 최고는 아니고 더 나은 것이 있다
+
+  * shared layout animation
+
+  box, circle을 두개를 만들어 하나는
+  clicked가 false일 떄 나오게 할것이다
+  <Box>{!clicked ? <Circle /> : null}</Box>
+  2번째는 반대로
+  <Box>{!clicked ? null : <Circle />}</Box>
+
+  지금은 보여주거나 숨기는것이다. 2개의 서로 다른 컴포넌트들을.
+
+  **** layout
+
+    const [clicked, setClicked] = useState(false);
+    const toggleClicked = () => setClicked(prev => !prev);
+
+    <Box style={{
+      justifyContent : clicked ? "center" :  "flex-start",
+      alignItems : clicked ? "center" : "flex-start"
+    }}>
+    <Circle layout />
 
 */
 
