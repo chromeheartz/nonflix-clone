@@ -730,4 +730,41 @@
 
   그래서 opacity를 바꾸는것보다 부모의 background alpha값을 바꾸는것으로 한다
 
+  *
+  박스를 눌렀을때 가운데로 오게 4가지 박스를 모두 적용시켜주려고
+  일단 map으로 배열의값을 뿌려준다
+
+  {[1,2,3,4].map(number => <Box key={number} layoutId={number+""} />)}
+  layoutId가 string이 되어야 하기 때문에 배열의 요소를 "1" 이런식으로 string으로 넣어주던지
+  layoutId에 number+"" 를 붙여 string으로 만들어준다
+
+  *** 어떤 Box를 클릭했는지 알아야한다
+  const [ id, setId ] = useState<null|string>(null);
+  id에 들어올값이 null이거나 string이라고 말해줌
+  
+  {[1,2,3,4].map(number => (
+      <Box 
+      onClick={() => setId(number+"")}
+      key={number}
+      layoutId={number+""} 
+    />
+  ))}
+
+  여기서 중요한것은 onClick={...} 에서
+  매개변수자리에 ()가 빠지면 안된다 그렇게 되면 이 function은 즉시 실행되기 때문에
+  () => 를 써줘서 이게 클릭이 될때만 실행될 수 있도록 한다
+
+  애니메이션을 위해 일단 Overlay를 클릭했을 때 박스가 없어질 수 있도록
+  onClick={() => setId(null)}을 잡아준다
+
+  <Box 
+    style={{width : 400, height : 200}}
+    layoutId={id+""}
+  />
+
+  overlay안에 Box에 이런식으로 state를 넣어주게되면
+  사용자가 무엇을 클릭하던 간에 숫자가 state로 갈것이고
+  overlay안에 Box를 render하면서 state를 layoutId로 넣어줄것이다
+
+
 */
