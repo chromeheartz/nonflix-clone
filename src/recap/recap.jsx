@@ -718,7 +718,16 @@
 
 /*
 
+  #7.15 ~ 7.16 Final Project part
 
+  overlay 안에 애니메이션이 들어갈 Box를 하나 만들어주고
+  Gird안의 박스들과 layoutId를 이어줘서
+  같은 component로 보일 수 있도록 한다
 
+  각각 다른 state를 animate하는 법
+  overlay 에 opacity가 0 - 1 - 0으로 가는 애니메이션을 주었는데
+  그것이 Box의 부모이기 때문에 opacity를 바꾸어서 조금 이상한 느낌으로 나오게된다
+
+  그래서 opacity를 바꾸는것보다 부모의 background alpha값을 바꾸는것으로 한다
 
 */
