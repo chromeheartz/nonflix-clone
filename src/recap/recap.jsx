@@ -669,11 +669,29 @@
 
   box, circle을 두개를 만들어 하나는
   clicked가 false일 떄 나오게 할것이다
-  <Box>{!clicked ? <Circle /> : null}</Box>
+  <Box>{!clicked ? <Circle /> : null}</Box>    
   2번째는 반대로
-  <Box>{!clicked ? null : <Circle />}</Box>
+  <Box>{clicked ? <Circle /> : null}</Box>
 
   지금은 보여주거나 숨기는것이다. 2개의 서로 다른 컴포넌트들을.
+
+  우리가 할것은 Framer에게 이 두 Circle은 사용자의 눈에 똑같이 보여야 한다고
+  알려줄것이다 animation이 있어야함.
+
+  결국 Framer에게 이 2개의 다른 component(Circle)이 같은 component라고
+  말해주어야한다 연결되어야한다고 말해주는것
+
+  layoutId라는 Prop을 두 Circle에 달아주어 두 component가 같다고
+  말해줄것이다
+
+  지금까지는 보여주거나 숨기는 것을 다른 component로 했다
+  하지만 layoutId로 묶어주면 이 두가지가 같다고 말하는것과 같다
+  그냥 Framer에게 Circle이 어디있는지 새 Circle이 어디있는지만 알려주면
+  알아서 animation을 만들어줄것이다.
+
+  같은 layoutId라면 react.js의 관점에서 컴포넌트가 따로따로 
+  렌더링될것이다
+
 
   **** layout
 
@@ -685,6 +703,16 @@
       alignItems : clicked ? "center" : "flex-start"
     }}>
     <Circle layout />
+
+  **** shared layout Id
+
+  const [clicked, setClicked] = useState(false);
+  const toggleClicked = () => setClicked(prev => !prev);
+
+  <Wrapper onClick={toggleClicked}>
+    <Box>{!clicked ? <Circle layoutId="circle" style={{ borderRadius : 50 }}/> : null}</Box>
+    <Box>{clicked ? <Circle layoutId="circle" style={{ borderRadius : 0 }} /> : null}</Box>
+  </Wrapper>
 
 */
 
