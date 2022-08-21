@@ -206,6 +206,38 @@
 
 /*
   
+  #8.7 ~ 8.8 slider
+
+  slider 를 만들어볼것인데 grid를 사용하고
+  row들을 absolute로 띄워준다.
+
+  motion을 사용할 때에는 모든것을 한번에 render할 필요가 없다
+  그러는 대신 key만 바꾸면 된다.
+
+  AnimatePresence는 컴포넌트가 render되거나 destroy될 떄
+  효과를 줄 수 있다.
+
+  일단 Row를 <AnimatePresence>안에 넣어주고 index 시스템이 필요하다
+  어딘가를 클릭하면 계속 다음페이지로 넘어가는 기능을 만들수있으니.
+
+  const [index, setIndex] = useState(0)
+  const increaseIndex = () => {
+    setIndex(prev => prev + 1)
+  }
+
+  Banner를 클릭했을떄 움직이는지 예시로 보려고 state를 바꾸어주는것을
+  만들고나서,
+  rowVariants를 지정해서 움직이게 지정을 해보았는데
+  그렇게 되면 bounce가 생겨서 transition prop을 수정해볼것이다.
+  모션의 기본 동작방식인 spring을 뺴주고 tween으로 바꾸어줌
+
+  또한 rowVariants의 x값이 현재는 지정된 값인데 
+  사용자의 화면 x값을 가져와야한다.
+  window.outerWidth로 잡아주었다
+
+  슬라이드를 잡는데 새로운 Row의 시작부분과 원래있던 Row의 마지막 사이에
+  gap이 들어가기를 원한다면, 계산을 조금 바꿔야한다.
+  variants에 gap이 들어가는 값을 넣어주면된다
 
 */
 
