@@ -53,6 +53,22 @@
   Home {homeMatch?.isExact && <Circle />}
   Tv Shows{tvMatch && <Circle />}
 
+  ** state 
+
+  <Search onClick={() => setSearchOpen(prev => !prev)}>
+  이런식으로 익명함수를 onClick안에 바로 넣어주어도된다.
+
+  *** search animation
+
+  search icon을 눌렀을때 input이 x축으로만 늘어나게 해볼것이다
+  * x축 *
+  searchOpen이 현해 열려있는가에 따라서 
+  비율을 1로 조정 할것이다
+
+  <Input animate={{ scaleX : searchOpen ? 1 : 0 }} />
+  하지만 이렇게 하면 input이 중앙에서부터 양쪽으로 커져나가기 때문에
+  변형의 시작점을 바꿀것이다
+
 */
 
 
