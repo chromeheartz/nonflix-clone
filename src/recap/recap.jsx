@@ -305,5 +305,22 @@
 
 /*
   
+  #8.9 ~ 8.10 Box Animation
+
+  현재 넷플릭스는 hover되었을때 이미지의 스케일이 커지고
+  커서를 올렸을떄에 딜레이가 있다. 하지만
+  그냥 transition delay로 주게되면 커서를 치웠을때도 딜레이가 생김
+
+  그것을 해결하기 위해 variant를 만듬
+  hover상태의 애니메이션에서만 한정해서 delay를 설정할 수 있다.
+
+  transition tween으로 해주려면 box의 prop과 active 되었을때
+  둘다 넣어주어야한다.
+
+  여기서 제일 첫번쨰와 제일 마지막은 scale이 바뀔때에 포스터가 잘리는
+  현상이 보인다.
+  각 번호에 맞는 child에게 transform origin으로 커지는 속성을 바꿔줌
+
+
 
 */
