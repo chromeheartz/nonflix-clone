@@ -239,6 +239,67 @@
   gap이 들어가기를 원한다면, 계산을 조금 바꿔야한다.
   variants에 gap이 들어가는 값을 넣어주면된다
 
+  계속 버튼을 눌러주면 큰 간격이 생긴다. 원래 있던 Row가 exit하는 도중에 
+  한번 더 눌러서 다음 Row도 사라지려고해서 생기는 현상이다.
+
+  이것을 해결하기 위해 leaving이라는 state를 만들어줌
+  leaving이 true일때 return으로 실행이 안되게 막아주었는데
+  그렇게 되면 한번 실행이 된 후에 true로 바뀌어서 더이상 실행이 되지않는다
+
+  여기서는 AnimatePresence의 prop을 하나 이용해볼것이다
+  이 prop은 onExitComplete라는것인데 여기에 
+  함수를 넣으면 exit가 끝났을때 실행이 될것이다.
+
+  toggleLeaving이라는 함수로 반대로 넣어줄것이다
+  increaseIndex안에서 호출하게되면 leaving은 true가 되고
+  exit가 끝났을떄 toggleLeaving을 호출하면 다시 false가 될것이다.
+
+  * 지금의 세팅에서는 movie들이 오른쪽에서 들어온다
+  이것은 state가 hidden인 상태에서 시작해서 그렇다.
+  이 문제를 해결하기 위해 다른 prop initial이라는 것을 주고
+  false를 줄것이다 이렇게 작성해주면 컴포넌트가 처음 mount될 때 오른쪽에서
+  들어오지않는다
+
+  ** 현재 18개가 들어간다고 가정하면 6개씩 3개의 슬라이드가 나와야하는데
+  함수를 하나 만들어 배열을 6개씩 잘라서 반환해주는 기능을 만들어볼것이다
+
+  그러려면 Offset 상수가 필요하다 offset의 값은 6이 될것이고,
+  page (index) 변수가 필요한데 시작은 0에서 할것이다
+  배열을 잘라주는 Slice함수를 사용해서 만들것
+
+  **** slice(offset*page, offset*page + offset)
+  이런식으로 해줄것이다.
+  그러면 page가 증가할때마다 가져오는 값이 달라질것이다
+  pagination같은 맥락
+
+  일단은 타이틀에서 썼던 것은 빼주는것부터 해주어야하니
+  data.results.slice(1)으로 시작할것이다
+  현재는 index라는 변수에 값이 들어가있기 때문에 이것으로 사용
+
+  {data?.results
+    .slice(1)
+    .slice(offset*index, offset*index + offset)
+    .map(i => (
+      <Box key={i}>{i}</Box>
+  ))}
+
+  그렇게되면 18개 이후에 1개가 나오고 한번 더 누르면 비어있는것이나온다
+  이제 index를 관리하는 부분에서 index를 증가만 시키는 대신에
+  영화가 총 몇개인지 페이지가 총 몇개인지 상한에 도달했으면 0으로만들어주고
+  이런작업들을 할것이다
+
+  const totalMovies = data.results.length;
+  const maxIndex = totalMovies / offset;
+
+  이부분을 보면 영화가 많아지면 소수가 생길수있다 예를들어
+  maxIndex가 4.2가 되면 페이지 4개를 다 채우고영화가 조금 남는다는 의미
+  그렇기 때문에 Math.ceil()을 해서 올림처리를 해줌
+  Math.floor는 반대로 내려주는것
+
+  Box에도 bgPhoto를 prop으로 보내주고, type설정을 해서 보면
+  제대로 들어오는데 로딩이 좀 걸린다. 기존에 만들었던 함수에서
+  format을 보내서 해결할 수 있엇다.
+
 */
 
 
