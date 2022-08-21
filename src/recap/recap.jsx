@@ -178,6 +178,29 @@
   그리고 useQuery Hook은 fetcher를 사용해서 
   data랑 Loading중인지에 대해 알려줌
 
+  Typescript를 사용하기 위해 API응답의 타입을 지정해주어야한다.
+  interface로 각 타입을 지정해주고
+  Typescript에게 useQuery의 결과가 IGetMoviesResult타입이라고 알려줌
+
+  title과 p는 우리가 받아올 객체에서 뽑아주면 된다.
+  하지만 background는 Helper function이 필요할것같다.
+
+  util.js에 이미지의 경로를 만들어주는 함수를 만들었다.
+  이미지 id인 id를 받을거고 format이 제공된다면 format을 사용하고 없으면 원본을 사용할것이다
+
+  Banner에 bgPhoto라는 것을 만들었는데 typescript가 혼란스러우니
+  Banner에 string인 bgPhoto가 들어온다고 정해주었다.
+
+  <Banner pgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
+  여기서 문제가 있었는데 typescript에 따르면 data가 정의되지 않을수도있다고 한다
+  API에서 안올수도있어서 fallback을 만들어준다 || "" 
+  여기서 한것은 어떠한 이유에서 data가 존재하지않아 backdrop_path가 제공되지않으면
+  그냥 빈 string을 보내라고 한것이다
+
+  * background-image : linear-gradient(rgba(0,0,0,0.5), rgba(0, 0, 0, 0.5)),url(${props => props.bgPhoto});
+  글자가 잘 보이지 않아 linear gradient로 dim처럼 만들어주었다
+  퍼블리싱할때도 좋은 팁이 될듯.
+
 */
 
 
