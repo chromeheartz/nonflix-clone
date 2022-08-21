@@ -65,9 +65,69 @@
   searchOpen이 현해 열려있는가에 따라서 
   비율을 1로 조정 할것이다
 
+  애니메이션을 구축하는데에는 2가지 방법이있다
+  한가지는 이런식으로 컴포넌트에 넣어주는 방법이고
+
   <Input animate={{ scaleX : searchOpen ? 1 : 0 }} />
   하지만 이렇게 하면 input이 중앙에서부터 양쪽으로 커져나가기 때문에
   변형의 시작점을 바꿀것이다
+
+  * 새로운 한가지는 애니메이션을 코드로부터 실행시키는것이다.
+  예를들어 toggleSearch에서 실행시키고싶을수도있을것이다
+
+  const toggleSearch = () => {
+    if(searchOpen) {
+      trigger the close animation
+    } else {
+      trigger the open animation
+    }
+    setSearchOpen(prev => !prev)
+  }
+
+  구현을 생각해본다면 이런식의 로직이 될것이다
+
+  * motion에서 제공하는 useAnimation hook을 사용할것이다
+  const inputAnimation = useAnimation();
+  선언을 해준 뒤 우리는 inputAnimation이라는 변수를
+  input에다가 넣을것이다
+
+  이제 우리가 하고싶은건 
+  animate={{ scaleX : searchOpen ? 1 : 0 }}이런식으로
+  input의 속성에 animate속성을 바로 주는것이 아니라 
+  애니메이션 속성이랑 커멘트를 코드로부터 만들어줄것이다
+
+  if(searchOpen) {
+    inputAnimation.start({
+      scaleX : 0,
+    })
+  } else {
+    inputAnimation.start({
+      scaleX : 1,
+    })
+  }
+
+  이런식으로 코드로부터 만들어주게 되면, 애니메이션들을 동시에 실행시키고 싶을때
+  유용하게 사용이가능하다.
+  예를들어 유저가 로그인하면 20개의 애니메이션을 실행시키려고할떄 같은
+  component의 props를 이용하지않고 하는것이 좋다
+
+
+  **** useViewportScroll 
+  
+  이것은 우리에게 모션값을 주는데 스크롤을 움직일때 제일 밑에서부터
+  얼마나 멀리있는지를 알려준다.
+
+  이것은 두가지 값을 줄것이다 그 중 하나는 Progress 이다
+  x,y에 대한 스크롤 진행도를 0에서부터 1사이의 값으로 알 수 있다
+  끝에서부터 얼마나 떨어져있는지 0퍼센트부터 100퍼센트 사이의 값으로 나타냄
+
+  * 변수를 지정해서도 가능하다
+  여기서의 중요한점은 component에게 variants라고 두가지를 이어주는것이다
+  만약 1가지 애니메이션만 하려면 이런식보다는
+  그냥 animate={{backgroundCOlor : scrollY > 80 ? "" : ""}}
+  이런식으로 해주는것이 더 좋을수도있다.
+
+  ** 하지만 코드로 애니메이션을 실행시키는것은 매우매우 중요하다.
 
 */
 
