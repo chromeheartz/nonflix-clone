@@ -304,6 +304,7 @@
 
 
 /*
+
   
   #8.9 ~ 8.10 Box Animation
 
@@ -327,4 +328,45 @@
 
   Info에 필요한 속성들만 따로 variant를 만들어서 사용
 
+*/
+
+
+
+
+/*
+
+  #8.11 ~ 8.13 Movie modal
+
+  Modal을 구현하려면 일단 URL을 바꾸어야한다
+  URL을 바꾸면 그 변화를 감지하고 URL에 기반하여 애니메이션을 실행시킬수 있음
+
+  일단 내가 어떤 영화를 클릭했는지 id를 알아야하니
+  Box가 클릭되었을때의 함수를 하나 만든다
+  이 함수는 movieid를 인자로 받을것이다
+  
+  그 후에 Box에 onClick을 넘겨줄것인데 argument를 넘겨야하니까
+  익명함수로 보내줄것이다
+  onClick={() => onBoxClicked(movie.id)}
+
+  * url을 바꾸기 위해서는 history object에 접근해야한다
+  useHistory를 사용하면 URL을 왔다갔다 할 수 있다.
+  hook을 import하고 push로 보내준다
+
+  박스 클릭을하면 url이 잘 바뀌고 있지만 우리가 만든 Router는
+  이런 URL을 처리하지 못하기때문에 Home을 보고있는것이다.
+  그래서 match를 이용할것이다
+
+  ** match는 지금 그 URL에 있는지 아닌지를 판단하는 도구
+  match를 만들기전에 path를 배열로 바꾸려고한다
+  / 이 path
+
+  그럼 라우터가 사용자가 "/"에 있을때도 Home을 render하고
+  "/movies/:movieId"에 있을때에도 Home을 render하도록
+  <Route path="/"> 를 <Route path={["/", "/movies/:movieId"]}>\
+  이렇게 하면 두개의 path에서 같은 컴포넌트를 render하도록 할 수 있다
+
+  const bigMovieMatch = useRouteMatch("/movies/:movieId");
+  이것을 콘솔로 찍어보면 Home일때는 아무것도 나오지않고
+  클릭을해서 바뀌게되면 정보가 객체로 들어온다
+  
 */

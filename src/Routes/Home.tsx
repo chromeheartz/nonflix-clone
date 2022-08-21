@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import styled from "styled-components";
 import { getMovies, IGetMoviesResult } from "../api";
 import { makeImagePath } from "../utils";
@@ -16,13 +17,13 @@ const Loader = styled.div`
   align-items : center;
 `
 
-const Banner = styled.div<{bgPhoto:string}>`
+const Banner = styled.div<{bgphoto:string}>`
   height : 100vh;
   display : flex;
   flex-direction : column;
   justify-content : center;
   padding : 60px;
-  background-image : linear-gradient(rgba(0,0,0,0), rgba(0, 0, 0, 1)),url(${props => props.bgPhoto});
+  background-image : linear-gradient(rgba(0,0,0,0), rgba(0, 0, 0, 1)),url(${props => props.bgphoto});
   background-size : cover;
 `
 
@@ -55,11 +56,12 @@ const Row = styled(motion.div)`
   width : 100%;
 `
 
-const Box = styled(motion.div)<{bgPhoto : string}>`
-  background-image : url(${props => props.bgPhoto});
+const Box = styled(motion.div)<{bgphoto : string}>`
+  background-image : url(${props => props.bgphoto});
   background-size : cover;
   background-position : center center;
   height : 150px;
+  cursor : pointer;
   &:first-child {
     transform-origin : center left;
   }
@@ -126,6 +128,9 @@ const infoVariants = {
 const offset = 6;
 
 function Home(){
+  const history = useHistory();
+  const bigMovieMatch = useRouteMatch("/movies/:movieId");
+  // console.log(bigMovieMatch)
   const { data, isLoading } = useQuery<IGetMoviesResult>(
     ["movies", "nowPlaying"],
     getMovies
@@ -146,14 +151,17 @@ function Home(){
     }
   }
   const toggleLeaving = () => setLeaving(prev => !prev)
-  console.log(data, isLoading);
+  const onBoxClicked = (movieId:number) => {
+    history.push(`/movies/${movieId}`)
+  }
+  // console.log(data, isLoading);
   return (
     <Wrapper>
       {isLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Banner onClick={increaseIndex} bgPhoto={makeImagePath(data?.results[0].backdrop_path || "")}>
+          <Banner onClick={increaseIndex} bgphoto={makeImagePath(data?.results[0].backdrop_path || "")}>
             <Title>{data?.results[0].title}</Title>
             <Overview>{data?.results[0].overview}</Overview>
           </Banner>
@@ -172,11 +180,12 @@ function Home(){
                   .map(movie => (
                     <Box 
                       key={movie.id}
+                      onClick={() => onBoxClicked(movie.id)}
                       variants={boxVariants}
                       initial="normal"
                       whileHover="hover"
                       transition={{type : "tween"}}
-                      bgPhoto={makeImagePath(movie.backdrop_path, "w500")}
+                      bgphoto={makeImagePath(movie.backdrop_path, "w500")}
                     >
                       <Info variants={infoVariants}>
                         <h4>{movie.title}</h4>
