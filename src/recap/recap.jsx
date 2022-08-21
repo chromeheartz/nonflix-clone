@@ -321,6 +321,10 @@
   현상이 보인다.
   각 번호에 맞는 child에게 transform origin으로 커지는 속성을 바꿔줌
 
+  Info 라는 Box에 자식요소를 하나 만들었는데
+  motion은 부모요소의 variants를 그대로 가져올 수 있다
+  자동적으로 자식에게도 상속됨.
 
+  Info에 필요한 속성들만 따로 variant를 만들어서 사용
 
 */
