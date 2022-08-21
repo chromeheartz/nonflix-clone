@@ -135,6 +135,48 @@
 
 /*
   
+  #8.5 ~ 8.6 Home screen
+
+  리액트 쿼리를 이용해 데이터를 가져오기 위해 우리가 해야할 첫번째는
+  쿼리 클라이언트를 만드는것이다.
+
+  provider와 함꼐 설정해주고 api key를 생성한다
+
+  그리고 우리가 해야할 유일한것은 URL로 요청을 보내는것이다
+  URL을 가져올 도구를 만들어볼것이다
+
+  api.ts에 fetch함수를 만들었다
+  `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`를 넣어주고
+  fetch다음에 response(응답)을 받기위해 then을 써주고
+  response.json()을 반환할것이다.
+
+  return fetch(
+    `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`
+  ).then((response) => response.json());
+
+  사용할 곳에서 useQuery를 이용한다. 기본적으로 여기에
+  KEY를 제공해야하고 이것은 문자열이나 배열이 될 수 있다
+
+  두번쨰 인자로는 fetch 함수를 넣는다.
+
+  추가로 우리는 useQuery가 data를 받았는지 loading중인지를 알려주는것을 안다
+  여기서 movies,nowPlaying은 그냥 식별자에 불과한것.
+  const { data, isLoading } = useQuery(["movies", "nowPlaying"], getMovies);
+
+  ** 현재 이미지의 전체 URL을 주는것이 아니라 
+  사진ID의 한 종류를 줄 뿐이다.
+  이미지에 접근하기 위해서
+  image.tmbd.org/t/p 이후에 이미지의 너비를 정하고
+  받고싶은 이미지의 id를 넣어주어야한다
+
+  https://developers.themoviedb.org/3/getting-started/images
+  참고 링크
+
+  ******* fetcher
+
+  fetcher는 데이터를 받아오고 JSON을 리턴하는 함수에 불과하다.
+  그리고 useQuery Hook은 fetcher를 사용해서 
+  data랑 Loading중인지에 대해 알려줌
 
 */
 
