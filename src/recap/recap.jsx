@@ -387,5 +387,42 @@
   이렇게 쓰면 typescript에서 movieId에 오류를 뱉어낼것인데
   useRouteMatch로 가서 params속의 movieId가 string이라는것을 알려주면된다
 
+
+  붙어있는 두개의 컴포넌트를 렌더링하기위해 <> Fragment를 써주고
+  Overlay 의 style을 정의해준다.
+  이제 Overlay의 onClick 이벤트를 감지할것
+  Overlay를 클릭하면 원래로 돌아갈수있도록
+  onOverlayClick 이라는 함수를 만들어서 history를 사용할것이다 
+  goBack 혹은 push('/')를 해주어도 된다
+
+  현재 overlay가 정중앙이 아닌 살짝 위로 올라갔는데 그것은 
+  motion.div에 top이 50으로 잡혀있어서 그렇다
+  
+  나는 card가 클릭 되었을 때 사용자가 밑으로 스크롤을 많이했어도 card가 가운데 나오게 하고싶다
+  이것을 해결하려면 scroll Position에 대해 알아야한다
+
+  사용자가 어디에 있든 스크롤된 화면에 맞게 가운데에 나오게 하고싶음
+  그래서 framer-motion의 useViewportScroll을 사용해볼것이다
+
+
+  *** useViewportScroll은 obejct를 하나 return해줌.
+  거기엔 현재 scrollX, scrollY의 progress값 또는 스크롤 거리의 숫자값이 있다
+  motion.div의 top값을 scrollY로 바꿔주면 내가 어디서 클릭을하던 화면 위에 딱 붙을것이다
+
+  * scrollY에 마진을 좀 주려고 + 100을 하면 에러가 생긴다
+  이 행동은 MotionValue에 number를 더하는것이기 때문
+  MotionValue는 특별하기때문에 .get()를 넣어주면 실제 값을 가져올 수 있다
+
+  style에서는 괜찮았지만 styled component로 옮겨서 넣어주게되면 scrollY.get()은 되지 않을것이다
+  이럴때에는 animateValue가 필요하다
+
+  이제 우리는 movieId를 가지고 정보를 찾아서 갖고있는 이미지를 보여줄것이다
+
+  ** tip 
+  이번 프로젝트에서는 now playing을 이용했지만 get details로 API요청을하게되면
+  더 많은 정보들을 가져올 수 있다.
+
+  
+
   
 */

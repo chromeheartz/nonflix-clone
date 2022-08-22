@@ -98,12 +98,12 @@ const logoVariants = {
 }
 
 const navVariants = {
-  top : {
-    backgroundColor : "rgba(0,0,0,0)",
+  top: {
+    backgroundColor: "rgba(0, 0, 0, 0)",
   },
-  scroll : {
-    backgroundColor : "rgba(0,0,0,1)",
-  }
+  scroll: {
+    backgroundColor: "rgba(0, 0, 0, 1)",
+  },
 }
 
 function Header(){
@@ -132,13 +132,13 @@ function Header(){
   // 이 값은 component를 새로고침 하지 않기 때문에 읽어내야한다.
   useEffect(() => {
     scrollY.onChange(() => {
-      if(scrollY.get() > 80) {
-        navAnimation.start("scoll")
+      if (scrollY.get() > 80) {
+        navAnimation.start("scroll");
       } else {
-        navAnimation.start("top")
+        navAnimation.start("top");
       }
-    })
-  }, [scrollY, navAnimation])
+    });
+  }, [scrollY, navAnimation]);
   
   return (
     <Nav variants={navVariants} animate={navAnimation} initial="top">
