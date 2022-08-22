@@ -331,8 +331,6 @@
 */
 
 
-
-
 /*
 
   #8.11 ~ 8.13 Movie modal
@@ -436,4 +434,100 @@
   이렇게 하면 오류가 뜰것이다 movie.id는 number고 다른것은 string이여서
   앞에 String(movie.id)를 해도 되고 + ""를 해도 되고 뒷부분에 +로 number로 바꾸어도된다
   
+*/
+
+
+/*
+
+  #8.14 Search Redirect
+
+  react Hook Form을 사용해볼것이다
+  form에서  사용할 IForm이라는 interface를 만들어줄것이다
+
+  useForm이 반환하는 register, handleSubmit을 받아올것이다
+  react-hook-form을 사용하면 데이터를 검증하는 function을 준다
+
+  검증한 뒤에 우리가 만든 function을 호출해서 데이터를 가지고 뭔가를 할 수 있게 해준다
+  이 function을 form으로 넣어주어야한다
+
+  여기서 * 중요한점은 괄호를 붙여서 이 function을 호출해주어야한다
+  <Search onSubmit={handleSubmit(onValid)}>
+
+  첫번째 매개변수로 데이터가 유효하면 실행할 function을 넣어줌
+
+  const onValid = (data:IForm) => {
+    console.log(data)
+  }
+
+  이렇게 찍어보면 keyword에 value로 인풋에 적었던 값이 들어온다
+
+  그럼 그 다음엔 사용자를 /search로 리다이렉트 해줄것이다
+  *** 어떻게하면 프로그래밍적 방식으로 사용자의 클릭없이 사용자를 다른 페이지로 보낼 수 있을까
+  react-router에는 history라는 기능이 있다
+
+  onValid안에서 history.push로 보내주는데 /search를 보내고 추가로 query argument도 넣을수 있다
+  query argument로 keyword를 data.keyword로 넣어줄것이다 
+
+  thor라고 인풋에 쳐보면 http://localhost:3000/search?keyword=thor
+  이렇게 들어갈것이다
+
+  ** 이제 Search로 가서 제일 먼저 해야할 일은 keyword에 접근하는것이다
+  location을 이용하면 지금 있는곳에 관한 정보를 얻을 수 있다
+  const location = useLocation();
+  console.log(location)
+
+  이런식으로 찍어보면 key,pathname,search등등 많은것들이 따라들어온다.
+  search에는 thor라는 keyword가 들어있을것이다
+  이제 Search 컴포넌트에서 location.search를 파싱해야한다.
+
+  하지만 현재
+  search: "?keyword=thor"
+  로 들어온 string을 보면 직접 파싱하기가 조금 어려운 형태이다.
+  "?keyword=thor".split('=') =를 기준으로 자르면
+  ['?keyword', 'thor']배열이 돌아오고 
+  아니면 "?keyword=thor".split('=')[1]해서 얻어올 수도 있다
+
+  문제는 그냥 keyword하나만 있을 수 있지 않다는 것이다 
+  예를들어 
+  http://localhost:3000/search?keyword=thor&region=kr
+  이런식으로 동시에 있는경우 어떻게 파싱해야할까.
+  그래서 직접 파싱하는 대신 URLSearchParameter라는것을 이용해볼것이다
+
+  * URLSearchParameter
+
+  이것은 react것도 아니고 javascript에 내장되어있는것이다
+  router에서 얻는것처럼 복사해서
+  search 라는것을 새로 만들고 new URLSearchParams()안에 복사한것을 넣어준다
+  const search = new URLSearchParams("?keyword=thor&region=kr")
+
+  그럼 이제 search.get("region")같이 접근할 수 있다 물론 keyword를 하면 thor가 나옴
+
+  그럼 이런식으로
+  const keyword = new URLSearchParams(location.search).get("keyword")
+  console.log(keyword)
+  
+  keyword를 받아올 수 있을것이다. 레전드다이건좀
+  이제 무엇을 검색할지는 알았다
+  그럼 어떤 URL에서 정보를 얻어와야 할까
+  API의 Search를 보면 나와있다
+
+  ** 확인해보기
+
+  https://developers.themoviedb.org/3/search/multi-search
+  여기로 들어가서 API_KEY를 입력하고 query 에 내가 검색할것을 넣어보면
+
+  https://api.themoviedb.org/3/search/multi?api_key=3b524a34352c4dd7f87f29a4dba72975&language=en-US&query=thor&page=1&include_adult=false
+  이런식으로 주소가 나오는데
+
+  query=thor&page=1&include_adult=false
+  이 부분이 중요한 쿼리 부분이다. 사용자가 검색하길 원하는것
+  url을 열어서 보면 정보가 들어올것이다
+
+  이제 API에서 fetch만 해오면 끝이다.
+  이제 API요청을 보내서 결과를 받고 
+  영화결과랑 TV결과를 따로 보여주면 될것이다. 만약 존재한다면
+
+  그리고 사람도 검색하고 싶다면 멀티서치를 이용해도 좋다.
+
+
 */
