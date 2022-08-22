@@ -368,5 +368,24 @@
   const bigMovieMatch = useRouteMatch("/movies/:movieId");
   이것을 콘솔로 찍어보면 Home일때는 아무것도 나오지않고
   클릭을해서 바뀌게되면 정보가 객체로 들어온다
+
+  이제 다른컴포넌트안에 AnimatePresence를 사용할것이다
+  그 컴포넌트는 bigMovieMatch가 존재할때만 나오게 할것이다
+  route가 URL에 위치하면 있을것이고 없으면 null이다.
+  이것이 존재한다면 큰 모달이 나와야한다는 뜻
+
+  * layoutId 
+  layoutId는 두개의 다른 div를 연결하고 framer motion이 그 div 사이를
+  애니메이션으로 연결할 수 있도록 하는 도구
+  movie.id를 주었는데 이것은 number이다. layoutId는 string을 원하기 때문에 string으로 
+  변환시켜줌
+
+  Box에는 설정을 해주었는데 modal에도 같은 값을 넣어주려고한다.
+  어떤 박스가 클릭 되었는지 알고싶으면 URL을 참고하면 된다.
+
+  <motion.div layoutId={bigMovieMatch.params.movieId}
+  이렇게 쓰면 typescript에서 movieId에 오류를 뱉어낼것인데
+  useRouteMatch로 가서 params속의 movieId가 string이라는것을 알려주면된다
+
   
 */
