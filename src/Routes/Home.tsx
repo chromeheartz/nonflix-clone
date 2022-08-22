@@ -101,7 +101,32 @@ const BigMovie = styled(motion.div)`
   height : 80vh;
   left : 0;
   right : 0;
-  margin : 0 auto
+  margin : 0 auto;
+  border-radius : 15px;
+  overflow : hidden;
+  background-color : ${props => props.theme.black.lighter};
+`
+
+const BigCover = styled.div`
+  width : 100%;
+  background-size : cover;
+  background-position : center center;
+  height : 300px;
+`
+
+const BigTitle = styled.h3`
+  color : ${props => props.theme.white.lighter};
+  padding : 10px;
+  font-size : 36px;
+  position : relative;
+  top : -60px;
+`
+
+const BigOverview = styled.p`
+  padding : 20px;
+  position : relative;
+  top : -60px;
+  color : ${props => props.theme.white.lighter};
 `
 
 const rowVariants = {
@@ -175,6 +200,9 @@ function Home(){
   }
   const onOverlayClick = () => history.goBack() // or push("/")
   // console.log(data, isLoading);
+  const clickedMovie = bigMovieMatch?.params.movieId &&
+    data?.results.find(movie => String(movie.id) === bigMovieMatch.params.movieId)
+  console.log(clickedMovie)
   return (
     <Wrapper>
       {isLoading ? (
@@ -224,12 +252,22 @@ function Home(){
                   animate={{ opacity : 1 }}
                   exit={{ opacity : 0 }}
                 />
-                <motion.div 
+                <BigMovie 
                   layoutId={bigMovieMatch.params.movieId}
                   style={{
                     top : scrollY.get() + 100
                   }}
-                />
+                >
+                  {clickedMovie && (
+                    <>
+                      <BigCover
+                        style={{ backgroundImage : `linear-gradient(to top, black, transparent), URL(${makeImagePath(clickedMovie.backdrop_path, "w500")})` }}
+                      />
+                      <BigTitle>{clickedMovie.title}</BigTitle>
+                      <BigOverview>{clickedMovie.overview}</BigOverview>
+                    </>
+                  )}
+                </BigMovie>
               </>
             ) : null}
           </AnimatePresence>

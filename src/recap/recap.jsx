@@ -422,7 +422,18 @@
   이번 프로젝트에서는 now playing을 이용했지만 get details로 API요청을하게되면
   더 많은 정보들을 가져올 수 있다.
 
-  
+  **
 
+  movieId를 이용해서 우리가 API에서 얻어온 data에서 그 영화를 찾을것이다.
+  그러면 다른 컴포넌트가 이 URL로 API에서 정보를 얻어오는 동안 미리보기를 보여줄 수 있을것이다
+  그래서 clickedMovie라는 상수를 만들것이다
+  여기서는 bigMovieMatch가 존재하는지 확인해야 할것이다
+
+  *** 이 부분 진짜 중요할듯함
+  const clickedMovie = bigMovieMatch?.params.movieId &&
+    data?.results.find(movie => movie.id === bigMovieMatch.params.movieId)
+
+  이렇게 하면 오류가 뜰것이다 movie.id는 number고 다른것은 string이여서
+  앞에 String(movie.id)를 해도 되고 + ""를 해도 되고 뒷부분에 +로 number로 바꾸어도된다
   
 */
